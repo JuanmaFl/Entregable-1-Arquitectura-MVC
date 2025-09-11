@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="form-section">
+    <h2>Iniciar sesión</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Correo electrónico:</label>
+        <input type="email" name="email" required>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" required>
+        <button class="btn" type="submit">Entrar</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Peering Latam{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+
+
+    {% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    {% endblock %}
+    
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+</script>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'core/img/logo.avif' %}" alt="Peering Latam Logo">
+            </div>
+            <nav class="site-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+
+                    <li><a href="{% url 'catalogo' %}">Catalogo</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <div class="user-icon" onclick="toggleDropdown()">
+                    {% if user.is_authenticated %}
+                    {{ user.email|slice:":1"|upper }}
+                    {% else %}
+                    👤
+                    {% endif %}
+                </div>
+                <div id="dropdown-menu" class="dropdown-content">
+                    {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <p><strong>{{ user.full_name }}</strong></p>
+                        <p>{{ user.email }}</p>
+                        <p>{{ user.position }}</p>
+                        <p>{{ user.company }}</p>
+                        <a href="{% url 'logout' %}">Cerrar sesión</a>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'signup' %}">Registrarse</a>
+                    <a href="{% url 'login' %}">Iniciar sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="site-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- CHATBOT UI -->
+    <div id="chat-bubble" class="chat-bubble">¿Necesitas ayuda?</div>
+
+    <div id="chatbox" class="chatbox">
+        <div class="chatbox-header">
+            <span>Asesor Virtual</span>
+            <span class="close-chat" onclick="chatbox.style.display='none'">❌</span>
+        </div>
+        <div id="chat-messages">
+            <p><strong>Bot:</strong> ¡Hola! 👋 Soy tu asistente virtual de Peering Latam. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre nuestros servicios, productos, soporte técnico, o cualquier duda que tengas.</p>
+        </div>
+        <input id="chat-input" type="text" placeholder="Escribe tu mensaje...">
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; {{ now|default:2025 }} Peering Latam. All rights reserved. </p>
+        <p> - +55 11 39955181 - www.peeringlatam.com.br- contato@peeringlatam.com.br - R. Helena, 235, 11 andar - Vila </p>
+        <p>Olímpia - São Paulo - SP - 04552450 - Brasil - CEP 04547-000</p>
+
+        <p>By Carlos Florez Mesa</p>
+
+    </footer>
+
+
+    <div class="sidebar-wrapper">
+        <div class="sidebar">
+            <a href="#" id="abrir-modal">Agenda tu cita</a>
+        </div>
+    </div>
+
+    {% if not cita_confirmada %}
+
+    <div id="modal-cita" class="modal hidden">
+        <div class="modal-content">
+            <h2>Agendar cita</h2>
+            <form method="POST" action="{% url 'agendar_cita' %}">
+                {% csrf_token %}
+                <label>Fecha:</label>
+                <input type="date" name="fecha" min="{{ today }}" required>
+                <label>Hora:</label>
+                <select name="hora" required>
+                    {% for h in horas %}
+                    <option>{{ h }}</option>
+                    {% endfor %}
+                </select>
+                <label>Asunto:</label>
+                <textarea name="asunto" required></textarea>
+                <div class="modal-buttons">
+                    <button type="submit">Agendar</button>
+                    <button type="button" id="cerrar-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- JS GENERAL -->
+    <script>
+        // Toggle del menú de usuario
+        function toggleDropdown() {
+            const menu = document.getElementById("dropdown-menu");
+            menu.classList.toggle("show");
+        }
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.user-icon')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (const dropdown of dropdowns) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        };
+
+        // CHATBOT
+        {% if user.is_authenticated %}
+        const bubble = document.getElementById('chat-bubble');
+        const chatbox = document.getElementById('chatbox');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+
+        bubble.onclick = () => {
+            chatbox.style.display = 'flex';
+        };
+
+        input.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const userMsg = input.value;
+                messages.innerHTML += `<p><strong>Tú:</strong> ${userMsg}</p>`;
+                input.value = '';
+
+                const response = await fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMsg })
+                });
+
+                const data = await response.json();
+                messages.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+                messages.scrollTop = messages.scrollHeight;
+            }
+        });
+        {% else %}
+        document.getElementById('chat-bubble').onclick = () => {
+            alert("Debes iniciar sesión para usar el chatbot.");
+            window.location.href = "{% url 'login' %}";
+        };
+        {% endif %}
+
+        // MODAL LOGIC
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("modal-cita");
+            const form = modal.querySelector("form");
+
+            document.getElementById("abrir-modal").onclick = e => {
+                e.preventDefault();
+                modal.classList.remove("hidden");
+            };
+
+            document.getElementById("cerrar-modal").onclick = () => {
+                modal.classList.add("hidden");
+            };
+
+            form.addEventListener("submit", function (e) {
+                setTimeout(() => {
+                    alert("Cita agendada con éxito.");
+                    modal.classList.add("hidden"); // Oculta el modal después de enviar
+                }, 500);
+            });
+        });
+    </script>
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>

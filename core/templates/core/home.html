@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Inicio | Peering Latam{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <h1>Conectividad más inteligente para Latinoamérica</h1>
+        <p>Somos <strong>Peering Latam</strong>, una empresa especializada en reducir costos y optimizar el tráfico de red. Conectamos proveedores, contenidos y usuarios de forma más eficiente.</p>
+        <a href="{% url 'catalogo' %}" class="btn">Explorar Catalogo</a>
+        <div class="video-wrapper" style="margin-top: 2rem;">
+            <video controls preload="auto" width="100%" height="auto" style="border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.15);">
+                <source src="{% static 'core/video/peering.mp4' %}" type="video/mp4">
+                Tu navegador no soporta videos HTML5.
+            </video>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="services">
+    <div class="container">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="{% static 'core/img/pmaas.png' %}" alt="PMaaS">
+                <h3>PMaa's</h3>
+                <p>Metodología para análisis, evaluación e implementación del tráfico de contenidos.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/ott.png' %}" alt="Monitoreo OTT">
+                <h3>Monitoreo OTT</h3>
+                <p>Monitorea calidad en streaming y gaming, detecta fallos y mejora la experiencia.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/cdn.png' %}" alt="CDN IPTV">
+                <h3>CDN IPTV y Streaming</h3>
+                <p>Optimiza la entrega de video, reduce latencia y mejora el rendimiento.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/datacenter.png' %}" alt="Centro de Datos">
+                <h3>Centro de Datos</h3>
+                <p>Interconexión con ISPs y redes de contenido en Equinix SP4 y otros nodos clave.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/ddos.png' %}" alt="Anti DDoS">
+                <h3>Anti DDoS</h3>
+                <p>Protección adaptable según tamaño del proveedor para mantener disponibilidad.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/cdnplan.png' %}" alt="Obtener CDN">
+                <h3>Obtener un CDN</h3>
+                <p>Planificación técnica y financiera para instalar CDN propio o en alianza.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/trafico.png' %}" alt="Análisis de Tráfico">
+                <h3>Análisis de Tráfico</h3>
+                <p>Estudio gratuito para definir estrategias de optimización a medida.</p>
+            </div>
+            <div class="service-card">
+                <img src="{% static 'core/img/consultoria.png' %}" alt="Consultoría">
+                <h3>Consultoría</h3>
+                <p>Diseño e implementación de IXP, redes neutras, peering y seguridad.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="productos">
+    <div class="container">
+        <h2 class="section-title">Nuestros Productos</h2>
+        <div class="productos-grid">
+            {% for producto in productos %}
+            <div class="producto-card">
+                <img src="{% static producto.imagen %}" alt="{{ producto.nombre }}">
+                <h3>{{ producto.nombre }}</h3>
+                <p>{{ producto.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section class="clientes">
+    <div class="container">
+        <h2 class="section-title">Clientes que confían en nosotros</h2>
+        <div class="clientes-grid">
+            {% for cliente in clientes %}
+            <div class="cliente-card">
+                <img src="{% static cliente.logo %}" alt="{{ cliente.nombre }}">
+                <h4>{{ cliente.nombre }}</h4>
+                <p>{{ cliente.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+

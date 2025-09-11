@@ -1,0 +1,76 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Catálogo de Productos{% endblock %}
+
+{% block content %}
+<!-- Bootstrap CDN (solo si no lo tienes en base.html) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="site-content">
+    <div class="container mt-0 pt-0" ">
+        <h2 class="text-center mb-4 section-title mt-0">Catálogo de Productos</h2>
+
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for producto in productos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <!-- Carrusel de imágenes -->
+                    <div id="carousel{{ producto.id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for imagen in producto.imagenes.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagen.imagen.url }}" class="d-block w-100" alt="{{ producto.nombre }}" style="height: 250px; object-fit: cover;">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if producto.imagenes.count > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ producto.id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ producto.id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ producto.nombre }}</h5>
+                        <p class="card-text text-muted">{{ producto.descripcion }}</p>
+                        <p class="card-text fw-bold text-success">${{ producto.precio }}</p>
+                        <a href="{% url 'agregar_carrito' producto.id %}" class="btn btn-primary">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'ver_carrito' %}" class="btn btn-outline-dark">🛒 Ver carrito</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Elimina márgenes/paddings que generan espacio superior */
+    body, html, main.site-content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* También sobre la cabecera para evitar separación si Bootstrap está tocando algo */
+    .site-header {
+        margin-bottom: 0 !important;
+    }
+
+    /* Corrige márgenes extra del container, row y sección */
+    .container, .row, .section-title, h2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+</style>
+
+    {% endblock %}
