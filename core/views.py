@@ -16,7 +16,7 @@ from .models import Producto
 openai.api_key = settings.OPENAI_API_KEY
 
 
-
+# Juan Manuel Florez
 
 
 

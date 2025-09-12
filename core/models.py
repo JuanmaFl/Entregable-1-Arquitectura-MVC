@@ -1,5 +1,5 @@
 from django.db import models
-
+# David Hernandez
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)

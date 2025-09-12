@@ -4,9 +4,13 @@
     "\\core",
     "\\core\\static",
     "\\core\\static\\core",
-    "\\templates",
-    "\\templates\\emails"
+    "\\core\\templates",
+    "\\core\\templates\\core",
+    "\\media",
+    "\\media\\productos",
+    "\\peeringlatam",
+    "\\templates"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\peeringlatam\\urls.py",
   "PreviewInSolutionExplorer": false
 }
