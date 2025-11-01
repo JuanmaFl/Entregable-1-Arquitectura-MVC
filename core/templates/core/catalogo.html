@@ -8,15 +8,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <div class="site-content">
-    <div class="container mt-0 pt-0" ">
-        <h2 class="text-center mb-4 section-title mt-0">Catálogo de Productos</h2>
+    <div class="container mt-0 pt-0">
+        <!-- Breadcrumbs Navigation -->
+        <nav aria-label="breadcrumb" class="mt-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Catalogo</li>
+            </ol>
+        </nav>
 
+        <h2 class="text-center mb-4 section-title mt-0" data-aos="fade-down">Catalogo de Productos</h2>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for producto in productos %}
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <!-- Carrusel de imágenes -->
+            <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <div class="card h-100 shadow-sm producto-card">
+                    <!-- Carrusel de imagenes -->
                     <div id="carousel{{ producto.id }}" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             {% for imagen in producto.imagenes.all %}
@@ -48,28 +55,98 @@
             {% endfor %}
         </div>
 
+        <!-- Paginacion -->
+        {% if productos.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if productos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.previous_page_number }}">Anterior</a>
+                </li>
+                {% endif %}
+
+                {% for num in productos.paginator.page_range %}
+                    {% if productos.number == num %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if productos.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.paginator.num_pages }}">Ultima</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
         <div class="text-center mt-4">
-            <a href="{% url 'ver_carrito' %}" class="btn btn-outline-dark">🛒 Ver carrito</a>
+            <a href="{% url 'ver_carrito' %}" class="btn btn-outline-dark">Ver carrito</a>
         </div>
     </div>
 </div>
 
 <style>
-    /* Elimina márgenes/paddings que generan espacio superior */
+    /* Elimina margenes/paddings que generan espacio superior */
     body, html, main.site-content {
         margin-top: 0 !important;
         padding-top: 0 !important;
     }
 
-    /* También sobre la cabecera para evitar separación si Bootstrap está tocando algo */
+    /* Tambien sobre la cabecera para evitar separacion si Bootstrap esta tocando algo */
     .site-header {
         margin-bottom: 0 !important;
     }
 
-    /* Corrige márgenes extra del container, row y sección */
+    /* Corrige margenes extra del container, row y seccion */
     .container, .row, .section-title, h2 {
         margin-top: 0 !important;
         padding-top: 0 !important;
+    }
+
+    /* Breadcrumbs styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .breadcrumb-item a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+        color: #004499;
+        text-decoration: underline;
+    }
+
+    /* Animacion hover para tarjetas de productos */
+    .producto-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .producto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* Estilo de paginacion */
+    .pagination .page-link {
+        color: #0066cc;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #0066cc;
+        border-color: #0066cc;
     }
 </style>
 

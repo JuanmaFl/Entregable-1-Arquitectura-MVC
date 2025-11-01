@@ -62,6 +62,7 @@ https://www.peeringlatam.com.br
 
 
 def login_view(request):
+    email = ''
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -70,8 +71,10 @@ def login_view(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "Credenciales inválidas")
-    return render(request, 'accounts/login.html')
+            messages.error(request, "Credenciales invalidas")
+            # Mantener el email en el formulario
+            return render(request, 'accounts/login.html', {'email': email})
+    return render(request, 'accounts/login.html', {'email': email})
 
 def logout_view(request):
     logout(request)

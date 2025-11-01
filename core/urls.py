@@ -7,11 +7,19 @@ from .views import chatbot_api
 
 urlpatterns = [
     path('', views.home, name='home'),
-    
+
     path('chatbot/', chatbot_api, name='chatbot_api'),
     path('agendar-cita/', views.agendar_cita, name='agendar_cita'),
     path('catalogo/', views.catalogo_view, name='catalogo'),
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('agregar-carrito/<int:producto_id>/', views.agregar_carrito, name='agregar_carrito'),
     path('eliminar-carrito/<int:producto_id>/', views.eliminar_carrito, name='eliminar_carrito'),
+
+    # API endpoints
+    path('api/productos/', views.api_productos_json, name='api_productos_json'),
+    path('api/clima/', views.obtener_clima, name='api_clima'),
+
+    # Reportes con inversion de dependencias
+    path('reportes/pdf/', views.generar_reporte_pdf, name='reporte_pdf'),
+    path('reportes/excel/', views.generar_reporte_excel, name='reporte_excel'),
 ]

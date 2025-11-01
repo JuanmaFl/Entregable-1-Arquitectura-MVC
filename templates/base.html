@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
     <!-- Juan Manuel Florez -->
+    <!-- Anime.js para animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
     {% block extra_css %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     {% endblock %}
@@ -45,10 +48,32 @@
             <nav class="site-nav">
                 <ul>
                     <li><a href="/">Home</a></li>
-
                     <li><a href="{% url 'catalogo' %}">Catalogo</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'reporte_pdf' %}">Reporte PDF</a></li>
+                    <li><a href="{% url 'reporte_excel' %}">Reporte Excel</a></li>
+                    {% endif %}
                 </ul>
             </nav>
+
+            <!-- Clima Widget -->
+            <div id="clima-widget" class="clima-widget">
+                <span id="clima-temp">--°C</span>
+                <span id="clima-ciudad">Medellin</span>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <form action="/i18n/setlang/" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language" onchange="this.form.submit()" class="form-select-sm">
+                        <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>ES</option>
+                        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>EN</option>
+                    </select>
+                </form>
+            </div>
+
             <div class="user-menu">
                 <div class="user-icon" onclick="toggleDropdown()">
                     {% if user.is_authenticated %}
@@ -64,11 +89,11 @@
                         <p>{{ user.email }}</p>
                         <p>{{ user.position }}</p>
                         <p>{{ user.company }}</p>
-                        <a href="{% url 'logout' %}">Cerrar sesión</a>
+                        <a href="{% url 'logout' %}">Cerrar sesion</a>
                     </div>
                     {% else %}
                     <a href="{% url 'signup' %}">Registrarse</a>
-                    <a href="{% url 'login' %}">Iniciar sesión</a>
+                    <a href="{% url 'login' %}">Iniciar sesion</a>
                     {% endif %}
                 </div>
             </div>
@@ -138,7 +163,40 @@
 
     <!-- JS GENERAL -->
     <script>
-        // Toggle del menú de usuario
+        // Cargar clima al iniciar la pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/clima/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.temperatura) {
+                        document.getElementById('clima-temp').textContent = data.temperatura + '°C';
+                        document.getElementById('clima-ciudad').textContent = data.ciudad;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar clima:', error);
+                });
+
+            // Animaciones con anime.js
+            anime({
+                targets: '.site-header',
+                translateY: [-50, 0],
+                opacity: [0, 1],
+                duration: 800,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.site-nav li',
+                translateY: [-20, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
+        });
+
+        // Toggle del menu de usuario
         function toggleDropdown() {
             const menu = document.getElementById("dropdown-menu");
             menu.classList.toggle("show");

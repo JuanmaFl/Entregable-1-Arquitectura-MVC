@@ -4,13 +4,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.core.paginator import Paginator
 import openai, dateparser
 import json
+import requests
 from datetime import datetime
 from datetime import date
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from .models import Producto
+from .services.report_generator import PDFReportGenerator, ExcelReportGenerator, ReportService
 
 # Asigna la API key desde settings
 openai.api_key = settings.OPENAI_API_KEY
@@ -129,7 +132,12 @@ def agendar_cita(request):
 
 
 def catalogo_view(request):
-    productos = Producto.objects.all()
+    productos_list = Producto.objects.all()
+    paginator = Paginator(productos_list, 6)  # 6 productos por pagina
+
+    page_number = request.GET.get('page')
+    productos = paginator.get_page(page_number)
+
     return render(request, 'core/catalogo.html', {'productos': productos})
 
 def agregar_carrito(request, producto_id):
@@ -155,3 +163,89 @@ def ver_carrito(request):
         productos.append({'producto': producto, 'cantidad': cantidad, 'subtotal': subtotal})
         total += subtotal
     return render(request, 'core/carrito.html', {'productos': productos, 'total': total})
+
+
+# Servicio web JSON - Provee informacion de productos
+def api_productos_json(request):
+    """
+    Servicio web que provee informacion de productos en formato JSON
+    Este servicio sera consumido por otros equipos
+    """
+    productos = Producto.objects.all()
+    productos_data = []
+
+    for producto in productos:
+        producto_info = {
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'descripcion': producto.descripcion,
+            'precio': float(producto.precio),
+            'url': request.build_absolute_uri(f'/catalogo/'),
+            'detalle_url': request.build_absolute_uri(f'/catalogo/'),
+        }
+
+        # Agregar imagenes si existen
+        imagenes = producto.imagenes.all()
+        if imagenes:
+            producto_info['imagenes'] = [
+                request.build_absolute_uri(img.imagen.url) for img in imagenes
+            ]
+
+        productos_data.append(producto_info)
+
+    return JsonResponse({
+        'status': 'success',
+        'total_productos': len(productos_data),
+        'productos': productos_data,
+        'proveedor': 'Peering Latam',
+        'timestamp': datetime.now().isoformat()
+    }, safe=False)
+
+
+# Consumir servicio externo - API de clima
+def obtener_clima(request):
+    """
+    Consume API externa de clima para mostrar informacion en el header
+    Usando wttr.in que es una API gratuita de clima
+    """
+    try:
+        # API de clima gratuita wttr.in
+        ciudad = 'Medellin'
+        response = requests.get(f'https://wttr.in/{ciudad}?format=j1', timeout=5)
+
+        if response.status_code == 200:
+            data = response.json()
+            clima = {
+                'temperatura': data['current_condition'][0]['temp_C'],
+                'descripcion': data['current_condition'][0]['weatherDesc'][0]['value'],
+                'humedad': data['current_condition'][0]['humidity'],
+                'ciudad': ciudad
+            }
+            return JsonResponse(clima)
+        else:
+            return JsonResponse({'error': 'No se pudo obtener el clima'}, status=500)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+# Generacion de reportes con inversion de dependencias
+@login_required
+def generar_reporte_pdf(request):
+    """
+    Genera un reporte de productos en formato PDF
+    Utiliza inversion de dependencias con PDFReportGenerator
+    """
+    productos = Producto.objects.all()
+    report_service = ReportService(PDFReportGenerator())
+    return report_service.create_report(productos, "reporte_productos.pdf")
+
+
+@login_required
+def generar_reporte_excel(request):
+    """
+    Genera un reporte de productos en formato Excel (CSV)
+    Utiliza inversion de dependencias con ExcelReportGenerator
+    """
+    productos = Producto.objects.all()
+    report_service = ReportService(ExcelReportGenerator())
+    return report_service.create_report(productos, "reporte_productos.csv")
