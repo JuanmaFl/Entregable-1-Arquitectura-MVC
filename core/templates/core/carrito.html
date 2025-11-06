@@ -1,0 +1,302 @@
+﻿{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Carrito de Compras" %} | Peering Latam{% endblock %}
+
+{% block content %}
+<div class="site-content" style="padding: 3rem 0; min-height: 70vh;">
+    <div class="container">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" data-aos="fade-down">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'catalogo' %}">{% trans "Catálogo" %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans "Carrito" %}</li>
+            </ol>
+        </nav>
+
+        <!-- Título -->
+        <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #7CB342, #00ACC1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 8px 24px rgba(0, 172, 193, 0.3);">
+                <span style="font-size: 2.5rem;">🛒</span>
+            </div>
+            <h2 class="section-title">{% trans "Tu Carrito de Compras" %}</h2>
+        </div>
+
+        {% if productos %}
+        <div class="row g-4">
+            <!-- Tabla de Productos -->
+            <div class="col-lg-8" data-aos="fade-right">
+                <div style="background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark); font-weight: 700;">
+                        {% trans "Productos en tu carrito" %}
+                    </h3>
+
+                    <div class="table-responsive">
+                        <table class="carrito-tabla">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">{% trans "Producto" %}</th>
+                                    <th style="text-align: center; width: 120px;">{% trans "Cantidad" %}</th>
+                                    <th style="text-align: right; width: 150px;">{% trans "Subtotal" %}</th>
+                                    <th style="text-align: center; width: 100px;">{% trans "Acción" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in productos %}
+                                <tr data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'50' }}">
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div style="width: 60px; height: 60px; background: var(--gradient-card); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                <span style="font-size: 1.5rem;">📦</span>
+                                            </div>
+                                            <div>
+                                                <strong style="display: block; color: var(--text-dark); margin-bottom: 0.25rem;">
+                                                    {{ item.producto.nombre }}
+                                                </strong>
+                                                <small style="color: var(--text-light);">
+                                                    ${{ item.producto.precio }} {% trans "c/u" %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <span style="display: inline-flex; align-items: center; justify-content: center; background: var(--bg-light); padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 600; min-width: 60px;">
+                                            {{ item.cantidad }}
+                                        </span>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <strong style="color: var(--primary-green); font-size: 1.2rem;">
+                                            ${{ item.subtotal }}
+                                        </strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="{% url 'eliminar_carrito' item.producto.id %}" class="btn-delete" title="{% trans 'Eliminar' %}">
+                                            🗑️
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen del Pedido -->
+            <div class="col-lg-4" data-aos="fade-left">
+                <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.05), rgba(0, 172, 193, 0.05)); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md); border: 2px solid var(--primary-cyan); position: sticky; top: 100px;">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark); font-weight: 700; text-align: center;">
+                        {% trans "Resumen del Pedido" %}
+                    </h3>
+
+                    <div style="border-bottom: 2px dashed var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="color: var(--text-light);">{% trans "Subtotal:" %}</span>
+                            <strong style="color: var(--text-dark);">${{ total }}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="color: var(--text-light);">{% trans "Envío:" %}</span>
+                            <strong style="color: var(--primary-green);">{% trans "Gratis" %}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="color: var(--text-light);">{% trans "IVA (19%):" %}</span>
+                            <strong style="color: var(--text-dark);">${{ total|floatformat:2 }}</strong>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark);">
+                                {% trans "Total:" %}
+                            </span>
+                            <span style="font-size: 2rem; font-weight: 800; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                ${{ total }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="btn" style="width: 100%; margin-bottom: 1rem; font-size: 1.1rem;" onclick="alert('{% trans " Funcionalidad de checkout en desarrollo" %}')">
+                        💳 {% trans "Proceder al Pago" %}
+                    </button>
+
+                    <a href="{% url 'catalogo' %}" class="btn btn-outline" style="width: 100%; text-align: center; display: block;">
+                        ← {% trans "Seguir Comprando" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- Carrito Vacío -->
+        <div data-aos="zoom-in" style="text-align: center; padding: 4rem 2rem;">
+            <div style="width: 150px; height: 150px; background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(0, 172, 193, 0.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                <span style="font-size: 5rem;">🛒</span>
+            </div>
+            <h3 style="color: var(--text-dark); margin-bottom: 1rem; font-size: 2rem;">
+                {% trans "Tu carrito está vacío" %}
+            </h3>
+            <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem;">
+                {% trans "¡Explora nuestro catálogo y encuentra productos increíbles!" %}
+            </p>
+            <a href="{% url 'catalogo' %}" class="btn" style="min-width: 250px; font-size: 1.1rem;">
+                🛍️ {% trans "Ir al Catálogo" %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    /* Tabla moderna */
+    .carrito-tabla {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.75rem;
+    }
+
+        .carrito-tabla thead tr {
+            background: var(--gradient-card);
+        }
+
+        .carrito-tabla th {
+            padding: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+            border: none;
+        }
+
+        .carrito-tabla thead tr th:first-child {
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+        }
+
+        .carrito-tabla thead tr th:last-child {
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .carrito-tabla tbody tr {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+            .carrito-tabla tbody tr:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+
+        .carrito-tabla td {
+            padding: 1.25rem 1rem;
+            border: none;
+            vertical-align: middle;
+        }
+
+        .carrito-tabla tbody tr td:first-child {
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+        }
+
+        .carrito-tabla tbody tr td:last-child {
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+    /* Botón eliminar mejorado */
+    .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: #FFEBEE;
+        color: #EF5350;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+
+        .btn-delete:hover {
+            background: #EF5350;
+            color: white;
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: var(--shadow-sm);
+        }
+
+    /* Botón outline */
+    .btn-outline {
+        background: transparent;
+        color: var(--primary-cyan);
+        border: 2px solid var(--primary-cyan);
+        text-decoration: none;
+        padding: 0.875rem 2rem;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline:hover {
+            background: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .carrito-tabla {
+            min-width: 600px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .carrito-tabla td {
+            padding: 1rem 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .carrito-tabla th {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    }
+</style>
+
+<script>
+    // Animación al eliminar producto
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const url = this.href;
+
+            // Animación de salida
+            anime({
+                targets: row,
+                opacity: [1, 0],
+                translateX: [0, 50],
+                duration: 400,
+                easing: 'easeInQuad',
+                complete: () => {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+
+    // Animar entrada de elementos
+    document.addEventListener('DOMContentLoaded', function() {
+        anime({
+            targets: '.carrito-tabla tbody tr',
+            translateX: [-50, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(100),
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+    });
+</script>
+{% endblock %}

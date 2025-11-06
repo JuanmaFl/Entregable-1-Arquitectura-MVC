@@ -1,0 +1,302 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "Catálogo de Productos" %} | Peering Latam{% endblock %}
+
+{% block content %}
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="site-content" style="padding: 2rem 0;">
+    <div class="container">
+        <!-- Breadcrumbs Navigation -->
+        <nav aria-label="breadcrumb" data-aos="fade-down">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans "Catálogo" %}</li>
+            </ol>
+        </nav>
+
+        <!-- Título y Descripción -->
+        <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
+            <h2 class="section-title">{% trans "Catálogo de Productos" %}</h2>
+            <p style="color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 1rem auto 0;">
+                {% trans "Explora nuestra selección de productos y servicios especializados" %}
+            </p>
+
+            <!-- Botones de Reportes -->
+            {% if user.is_authenticated %}
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                <a href="{% url 'reporte_pdf' %}" class="btn-outline" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;">
+                    📄 {% trans "Descargar PDF" %}
+                </a>
+                <a href="{% url 'reporte_excel' %}" class="btn-outline" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;">
+                    📊 {% trans "Descargar Excel" %}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Grid de Productos -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for producto in productos %}
+            <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <div class="card h-100 producto-card">
+                    <!-- Carrusel de imágenes -->
+                    <div id="carousel{{ producto.id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" style="border-radius: var(--radius-lg) var(--radius-lg) 0 0; overflow: hidden;">
+                            {% for imagen in producto.imagenes.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagen.imagen.url }}" class="d-block w-100" alt="{{ producto.nombre }}" style="height: 280px; object-fit: cover;">
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Controles del carrusel -->
+                        {% if producto.imagenes.count > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ producto.id }}" data-bs-slide="prev" style="width: 40px;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0, 172, 193, 0.8); border-radius: 50%; padding: 1rem;"></span>
+                            <span class="visually-hidden">{% trans "Anterior" %}</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ producto.id }}" data-bs-slide="next" style="width: 40px;">
+                            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0, 172, 193, 0.8); border-radius: 50%; padding: 1rem;"></span>
+                            <span class="visually-hidden">{% trans "Siguiente" %}</span>
+                        </button>
+
+                        <!-- Indicadores -->
+                        <div class="carousel-indicators" style="margin-bottom: 0.5rem;">
+                            {% for imagen in producto.imagenes.all %}
+                            <button type="button" data-bs-target="#carousel{{ producto.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-current="true" aria-label="Slide {{ forloop.counter }}" style="background-color: var(--primary-cyan);"></button>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Contenido de la tarjeta -->
+                    <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h5 class="card-title" style="color: var(--text-dark); font-weight: 700; font-size: 1.3rem; margin-bottom: 0.75rem;">
+                                {{ producto.nombre }}
+                            </h5>
+                            <p class="card-text" style="color: var(--text-light); font-size: 0.95rem; line-height: 1.6;">
+                                {{ producto.descripcion }}
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 1rem;">
+                            <p class="card-text text-success" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">
+                                ${{ producto.precio }}
+                            </p>
+                            <a href="{% url 'agregar_carrito' producto.id %}" class="btn" style="width: 100%;">
+                                🛒 {% trans "Agregar al carrito" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginación Mejorada -->
+        {% if productos.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-5" data-aos="fade-up">
+            <ul class="pagination justify-content-center">
+                {% if productos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">{% trans "Primera" %}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.previous_page_number }}">‹ {% trans "Anterior" %}</a>
+                </li>
+                {% endif %}
+
+                {% for num in productos.paginator.page_range %}
+                {% if productos.number == num %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if productos.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.next_page_number }}">{% trans "Siguiente" %} ›</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ productos.paginator.num_pages }}">{% trans "Última" %}</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <!-- Botón Ver Carrito -->
+        <div class="text-center mt-5" data-aos="zoom-in">
+            <a href="{% url 'ver_carrito' %}" class="btn btn-outline" style="min-width: 200px;">
+                🛍️ {% trans "Ver carrito" %}
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos específicos del catálogo */
+    .card {
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .producto-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+    }
+
+        .producto-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-cyan);
+        }
+
+    /* Efecto hover en imágenes del carrusel */
+    .carousel-item img {
+        transition: transform 0.3s ease;
+    }
+
+    .producto-card:hover .carousel-item img {
+        transform: scale(1.05);
+    }
+
+    /* Controles del carrusel mejorados */
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .producto-card:hover .carousel-control-prev,
+    .producto-card:hover .carousel-control-next {
+        opacity: 1;
+    }
+
+    /* Paginación moderna */
+    .pagination {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+        .pagination .page-link {
+            padding: 0.625rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+            .pagination .page-link:hover {
+                background: var(--primary-cyan);
+                color: white;
+                border-color: var(--primary-cyan);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-sm);
+            }
+
+        .pagination .page-item.active .page-link {
+            background: var(--gradient-main);
+            border-color: var(--primary-cyan);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+    /* Badge de precio */
+    .text-success {
+        background: linear-gradient(135deg, #7CB342, #66BB6A);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Botones mejorados */
+    .btn-outline {
+        background: transparent;
+        color: var(--primary-cyan);
+        border: 2px solid var(--primary-cyan);
+    }
+
+        .btn-outline:hover {
+            background: var(--primary-cyan);
+            color: white;
+        }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .carousel-item img {
+            height: 220px !important;
+        }
+
+        .card-title {
+            font-size: 1.1rem !important;
+        }
+    }
+</style>
+
+<script>
+    // Animaciones adicionales con anime.js
+    document.addEventListener('DOMContentLoaded', function () {
+        // Animar las tarjetas de productos al cargar
+        anime({
+            targets: '.producto-card',
+            scale: [0.95, 1],
+            opacity: [0, 1],
+            delay: anime.stagger(100, { start: 300 }),
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        // Efecto al agregar al carrito
+        document.querySelectorAll('a[href*="agregar_carrito"]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                // Animación de éxito
+                const card = this.closest('.producto-card');
+                anime({
+                    targets: card,
+                    scale: [1, 1.05, 1],
+                    duration: 400,
+                    easing: 'easeInOutQuad'
+                });
+            });
+        });
+
+        // Lazy loading de imágenes del carrusel
+        const images = document.querySelectorAll('.carousel-item img');
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        }
+    });
+</script>
+{% endblock %}

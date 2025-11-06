@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mis Simulaciones - Peering Latam{% endblock %}
+
+{% block extra_css %}
+<style>
+    .mis-simulaciones-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
+    .header-simulaciones {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+        .header-simulaciones h1 {
+            font-size: 2.5rem;
+            color: #1976D2;
+            margin-bottom: 1rem;
+        }
+
+        .header-simulaciones p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+    .simulaciones-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .simulacion-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        padding: 2rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid #667eea;
+    }
+
+        .simulacion-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+    .simulacion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .simulacion-id {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .simulacion-fecha {
+        font-size: 0.9rem;
+        color: #999;
+    }
+
+    .simulacion-metricas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .metrica-mini {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 1rem;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .metrica-mini-label {
+        display: block;
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+    }
+
+    .metrica-mini-valor {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .servicios-mini {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .servicio-badge-mini {
+        background: #667eea;
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 16px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .simulacion-acciones {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-mini {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-ver {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+        .btn-ver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+    .btn-eliminar {
+        background: #f44336;
+        color: white;
+    }
+
+        .btn-eliminar:hover {
+            background: #d32f2f;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .empty-state-icon {
+        font-size: 5rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    .btn-nueva-simulacion {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .btn-nueva-simulacion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+    @media (max-width: 768px) {
+        .mis-simulaciones-container {
+            padding: 1rem;
+        }
+
+        .simulacion-metricas {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .simulacion-acciones {
+            flex-direction: column;
+        }
+
+        .btn-mini {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mis-simulaciones-container" data-aos="fade-up">
+    <!-- Header -->
+    <div class="header-simulaciones">
+        <h1>📋 Mis Simulaciones</h1>
+        <p>Historial completo de tus análisis de red</p>
+    </div>
+
+    {% if simulaciones %}
+    <!-- Grid de Simulaciones -->
+    <div class="simulaciones-grid">
+        {% for sim in simulaciones %}
+        <div class="simulacion-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+            <!-- Header -->
+            <div class="simulacion-header">
+                <div>
+                    <span class="simulacion-id">🔍 Simulación #{{ sim.id }}</span>
+                </div>
+                <span class="simulacion-fecha">📅 {{ sim.fecha_creacion|date:"d/m/Y H:i" }}</span>
+            </div>
+
+            <!-- Servicios -->
+            <div class="servicios-mini">
+                {% for servicio in sim.servicios_seleccionados %}
+                <span class="servicio-badge-mini">{{ servicio }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Métricas -->
+            <div class="simulacion-metricas">
+                <div class="metrica-mini">
+                    <span class="metrica-mini-label">Latencia</span>
+                    <span class="metrica-mini-valor">{{ sim.latencia_mejorada|floatformat:1 }} ms</span>
+                </div>
+                <div class="metrica-mini">
+                    <span class="metrica-mini-label">Pérdida</span>
+                    <span class="metrica-mini-valor">{{ sim.perdida_paquetes_mejorada|floatformat:1 }}%</span>
+                </div>
+                <div class="metrica-mini">
+                    <span class="metrica-mini-label">Mejora</span>
+                    <span class="metrica-mini-valor">{{ sim.mejora_porcentual|floatformat:0 }}%</span>
+                </div>
+                <div class="metrica-mini">
+                    <span class="metrica-mini-label">Inversión</span>
+                    <span class="metrica-mini-valor">${{ sim.costo_estimado_mensual|floatformat:0 }}</span>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="simulacion-acciones">
+                <a href="{% url 'resultado_simulacion' sim.id %}" class="btn-mini btn-ver">
+                    👁️ Ver Resultados
+                </a>
+                <button onclick="confirmarEliminar({{ sim.id }})" class="btn-mini btn-eliminar">
+                    🗑️ Eliminar
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Botón Nueva Simulación -->
+    <div style="text-align: center; margin-top: 3rem;">
+        <a href="{% url 'simulador_red' %}" class="btn-nueva-simulacion" data-aos="fade-up">
+            ➕ Nueva Simulación
+        </a>
+    </div>
+
+    {% else %}
+    <!-- Estado Vacío -->
+    <div class="empty-state" data-aos="zoom-in">
+        <div class="empty-state-icon">📊</div>
+        <h2>Aún no tienes simulaciones</h2>
+        <p>Comienza a analizar tu red y descubre cómo mejorarla con nuestros servicios</p>
+        <a href="{% url 'simulador_red' %}" class="btn-nueva-simulacion">
+            🚀 Crear Primera Simulación
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmarEliminar(simulacionId) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta simulación?')) {
+        // Aquí implementarías la lógica de eliminación
+        // Por ahora solo mostramos un alert
+        alert('Función de eliminación no implementada aún. ID: ' + simulacionId);
+
+        // Ejemplo de implementación:
+        /*
+        fetch(`/simulador/eliminar/${simulacionId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+        */
+    }
+}
+</script>
+{% endblock %}

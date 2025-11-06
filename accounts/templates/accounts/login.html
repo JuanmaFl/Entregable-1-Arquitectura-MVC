@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Iniciar Sesión" %} | Peering Latam{% endblock %}
+
+{% block content %}
+<section class="form-section" data-aos="fade-up" data-aos-duration="600">
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "Login" %}</li>
+        </ol>
+    </nav>
+
+    <!-- Título con icono -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #7CB342, #00ACC1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 8px 24px rgba(0, 172, 193, 0.3);">
+            <span style="font-size: 2.5rem;">🔐</span>
+        </div>
+        <h2>{% trans "Iniciar Sesión" %}</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">{% trans "Bienvenido de nuevo a Peering Latam" %}</p>
+    </div>
+
+    <!-- Mensajes de error/éxito -->
+    {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" data-aos="fade-down">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <form method="post" id="login-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="email">
+                <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    📧 {% trans "Correo Electrónico" %}
+                </span>
+            </label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   value="{{ email }}"
+                   placeholder="{% trans 'tu@email.com' %}"
+                   required
+                   autocomplete="email">
+        </div>
+
+        <div class="form-group">
+            <label for="password">
+                <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    🔒 {% trans "Contraseña" %}
+                </span>
+            </label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="{% trans '••••••••' %}"
+                   required
+                   autocomplete="current-password">
+        </div>
+
+        <button class="btn" type="submit" style="width: 100%; margin-top: 1rem;">
+            {% trans "Entrar" %}
+        </button>
+    </form>
+
+    <!-- Links adicionales -->
+    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <p style="color: var(--text-light); margin-bottom: 0.5rem;">
+            {% trans "¿No tienes cuenta?" %}
+        </p>
+        <a href="{% url 'signup' %}" style="color: var(--primary-cyan); text-decoration: none; font-weight: 600; font-size: 1.05rem;">
+            {% trans "Regístrate aquí" %} →
+        </a>
+    </div>
+</section>
+
+<style>
+    .form-section {
+        animation: slideUpFade 0.6s ease;
+    }
+
+    @keyframes slideUpFade {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Animación en focus de inputs */
+    form input:focus {
+        animation: inputPulse 0.3s ease;
+    }
+
+    @keyframes inputPulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(0, 172, 193, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(0, 172, 193, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 172, 193, 0);
+        }
+    }
+
+    /* Hover effects mejorados */
+    form input:hover {
+        border-color: var(--primary-cyan);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-section {
+            margin: 2rem 1rem;
+            padding: 2rem 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    // Animación del formulario al enviarse
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        const btn = this.querySelector('button[type="submit"]');
+        btn.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⏳</span> {% trans "Ingresando..." %}';
+        btn.disabled = true;
+    });
+
+    // Animación de los inputs con anime.js
+    anime({
+        targets: '.form-group',
+        translateX: [-30, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(100, {start: 300}),
+        duration: 600,
+        easing: 'easeOutExpo'
+    });
+</script>
+
+<style>
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

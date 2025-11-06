@@ -1,0 +1,36 @@
+{
+  "topologias": [
+    {
+      "id": 1,
+      "nombre": "Topología en Estrella",
+      "descripcion": "Todos los dispositivos conectados a un nodo central",
+      "ventajas": [ "Fácil de instalar", "Fallo de un nodo no afecta a otros" ],
+      "desventajas": [ "Si falla el nodo central, toda la red cae" ],
+      "imagen": "estrella.png"
+    },
+    {
+      "id": 2,
+      "nombre": "Topología en Anillo",
+      "descripcion": "Los dispositivos están conectados en un circuito cerrado",
+      "ventajas": [ "Datos fluyen en una dirección", "Fácil de instalar" ],
+      "desventajas": [ "Si un nodo falla, afecta toda la red" ],
+      "imagen": "anillo.png"
+    },
+    {
+      "id": 3,
+      "nombre": "Topología en Malla",
+      "descripcion": "Todos los nodos están conectados entre sí",
+      "ventajas": [ "Alta redundancia", "Si un enlace falla, hay rutas alternativas" ],
+      "desventajas": [ "Costosa de implementar", "Compleja de mantener" ],
+      "imagen": "malla.png"
+    },
+    {
+      "id": 4,
+      "nombre": "Topología en Bus",
+      "descripcion": "Todos los dispositivos conectados a un cable central",
+      "ventajas": [ "Económica", "Fácil de implementar para redes pequeñas" ],
+      "desventajas": [ "Si el cable central falla, toda la red se cae" ],
+      "imagen": "bus.png"
+    }
+  ]
+}

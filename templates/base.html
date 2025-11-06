@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE|default:'es' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Peering Latam - Conectividad Inteligente{% endblock %}</title>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+
+    <!-- CRÍTICO: Estilos inline para forzar navbar pegado -->
+    <style>
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden;
+        }
+
+        body {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        .site-header {
+            margin-top: 0 !important;
+            top: 0 !important;
+        }
+
+        /* Estilo especial para el link del simulador */
+        .nav-simulador {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .nav-simulador:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+    </style>
+
+    <!-- Anime.js para animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <!-- AOS - Animate On Scroll -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- HEADER MODERNO -->
+    <header class="site-header">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'core/img/logo.avif' %}" alt="Peering Latam Logo">
+                </a>
+            </div>
+
+            <!-- Navegación Principal -->
+            <nav class="site-nav" id="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                    <li><a href="{% url 'catalogo' %}">{% trans "Catalogo" %}</a></li>
+                    <li><a href="{% url 'simulador_red' %}" class="nav-simulador">🚀 {% trans "Simulador" %}</a></li>
+                </ul>
+            </nav>
+
+            <!-- Widgets del Header -->
+            <div class="header-widgets">
+                <!-- Widget de Clima -->
+                <div class="clima-widget">
+                    <div class="clima-icon">🌤️</div>
+                    <div class="clima-info">
+                        <span id="clima-temp">--°C</span>
+                        <span id="clima-ciudad">Medellín</span>
+                    </div>
+                </div>
+
+                <!-- Selector de Idioma CORREGIDO -->
+                <div class="language-selector">
+                    <form action="{% url 'set_language' %}" method="post" id="language-form">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <select name="language" onchange="document.getElementById('language-form').submit();" class="form-select-sm">
+                            {% get_current_language as CURRENT_LANGUAGE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% for lang_code, lang_name in LANGUAGES %}
+                            <option value="{{ lang_code }}" {% if lang_code == CURRENT_LANGUAGE %}selected{% endif %}>
+                                {{ lang_code|upper }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+                <!-- Menú de Usuario -->
+                <div class="user-menu">
+                    <div class="user-icon" onclick="toggleDropdown()">
+                        {% if user.is_authenticated %}
+                        {{ user.email|slice:":1"|upper }}
+                        {% else %}
+                        👤
+                        {% endif %}
+                    </div>
+                    <div id="dropdown-menu" class="dropdown-content">
+                        {% if user.is_authenticated %}
+                        <div class="user-info">
+                            <p><strong>{{ user.full_name }}</strong></p>
+                            <p>{{ user.email }}</p>
+                            <p>{{ user.position }}</p>
+                            <p>{{ user.company }}</p>
+                            <a href="{% url 'mis_simulaciones' %}">📋 {% trans "Mis Simulaciones" %}</a>
+                            <a href="{% url 'logout' %}">{% trans "Cerrar sesión" %}</a>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'signup' %}">{% trans "Registrarse" %}</a>
+                        <a href="{% url 'login' %}">{% trans "Iniciar sesión" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="site-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>&copy; {{ now.year|default:2025 }} Peering Latam. {% trans "Todos los derechos reservados" %}.</p>
+        <p>+55 11 39955181 - www.peeringlatam.com.br - contato@peeringlatam.com.br</p>
+        <p>R. Helena, 235, 11 andar - Vila Olímpia - São Paulo - SP - Brasil - CEP 04547-000</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">Developed by Carlos Florez Mesa & Juan Manuel Florez</p>
+    </footer>
+
+    <!-- CHATBOT UI -->
+    {% if user.is_authenticated %}
+    <div class="chat-bubble" id="chat-bubble">{% trans "¿Necesitas ayuda?" %}</div>
+
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            <span>{% trans "Asesor Virtual" %}</span>
+            <span class="close-chat" onclick="document.getElementById('chatbox').classList.remove('show')">✕</span>
+        </div>
+        <div id="chat-messages">
+            <p><strong>Bot:</strong> {% trans "¡Hola! 👋 Soy tu asistente virtual de Peering Latam. ¿En qué puedo ayudarte hoy?" %}</p>
+        </div>
+        <input id="chat-input" type="text" placeholder="{% trans 'Escribe tu mensaje...' %}">
+    </div>
+    {% else %}
+    <div class="chat-bubble" id="chat-bubble">{% trans "¿Necesitas ayuda?" %}</div>
+    {% endif %}
+
+    <!-- SIDEBAR - AGENDAR CITA -->
+    <div class="sidebar-wrapper">
+        <div class="sidebar">
+            <a href="#" id="abrir-modal">{% trans "Agenda tu cita" %}</a>
+        </div>
+    </div>
+
+    <!-- MODAL AGENDAR CITA -->
+    {% if not cita_confirmada %}
+    <div id="modal-cita" class="modal hidden">
+        <div class="modal-content">
+            <h2>{% trans "Agendar cita" %}</h2>
+            <form method="POST" action="{% url 'agendar_cita' %}">
+                {% csrf_token %}
+                <label>{% trans "Fecha:" %}</label>
+                <input type="date" name="fecha" min="{{ today }}" required>
+
+                <label>{% trans "Hora:" %}</label>
+                <select name="hora" required>
+                    <option value="">-- {% trans "Selecciona una hora" %} --</option>
+                    <option value="08:00">08:00 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                </select>
+
+                <label>{% trans "Asunto:" %}</label>
+                <textarea name="asunto" rows="4" placeholder="{% trans 'Describe brevemente el motivo de tu cita...' %}" required></textarea>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn">{% trans "Agendar" %}</button>
+                    <button type="button" id="cerrar-modal">{% trans "Cancelar" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- AOS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- JavaScript Principal -->
+    <script>
+        // Inicializar AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
+            // Cargar clima
+            fetch('/api/clima/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.temperatura) {
+                        document.getElementById('clima-temp').textContent = data.temperatura + '°C';
+                        document.getElementById('clima-ciudad').textContent = data.ciudad;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar clima:', error);
+                });
+
+            // Animaciones del header con anime.js
+            anime({
+                targets: '.site-header',
+                translateY: [-50, 0],
+                opacity: [0, 1],
+                duration: 800,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.site-nav li',
+                translateX: [-30, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100, {start: 300}),
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
+
+            // Animación de widgets
+            anime({
+                targets: '.header-widgets > *',
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                delay: anime.stagger(100, {start: 500}),
+                duration: 500,
+                easing: 'easeOutExpo'
+            });
+        });
+
+        // Toggle del menú de usuario
+        function toggleDropdown() {
+            const menu = document.getElementById("dropdown-menu");
+            menu.classList.toggle("show");
+        }
+
+        // Cerrar dropdown al hacer click fuera
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.user-icon')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (const dropdown of dropdowns) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                }
+            }
+        });
+
+        // CHATBOT
+        {% if user.is_authenticated %}
+        const bubble = document.getElementById('chat-bubble');
+        const chatbox = document.getElementById('chatbox');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+
+        bubble.onclick = () => {
+            chatbox.classList.add('show');
+            // Animación de entrada
+            anime({
+                targets: '.chatbox',
+                scale: [0.9, 1],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutExpo'
+            });
+        };
+
+        input.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && input.value.trim()) {
+                const userMsg = input.value.trim();
+                messages.innerHTML += `<p style="background: #E3F2FD; padding: 0.75rem; border-radius: 12px; margin: 0.5rem 0;"><strong>Tú:</strong> ${userMsg}</p>`;
+                input.value = '';
+
+                try {
+                    const response = await fetch('/chatbot/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ message: userMsg })
+                    });
+
+                    const data = await response.json();
+                    messages.innerHTML += `<p style="background: #F1F8E9; padding: 0.75rem; border-radius: 12px; margin: 0.5rem 0;"><strong>Bot:</strong> ${data.reply}</p>`;
+                    messages.scrollTop = messages.scrollHeight;
+                } catch (error) {
+                    console.error('Error:', error);
+                    messages.innerHTML += `<p style="background: #FFEBEE; padding: 0.75rem; border-radius: 12px; margin: 0.5rem 0;"><strong>Error:</strong> No se pudo enviar el mensaje</p>`;
+                }
+            }
+        });
+        {% else %}
+        document.getElementById('chat-bubble').onclick = () => {
+            alert("{% trans 'Debes iniciar sesión para usar el chatbot.' %}");
+            window.location.href = "{% url 'login' %}";
+        };
+        {% endif %}
+
+        // MODAL LOGIC
+        const modal = document.getElementById("modal-cita");
+        if (modal) {
+            const abrirBtn = document.getElementById("abrir-modal");
+            const cerrarBtn = document.getElementById("cerrar-modal");
+            const form = modal.querySelector("form");
+
+            abrirBtn.onclick = (e) => {
+                e.preventDefault();
+                modal.classList.remove("hidden");
+                anime({
+                    targets: '.modal-content',
+                    scale: [0.9, 1],
+                    opacity: [0, 1],
+                    duration: 300,
+                    easing: 'easeOutExpo'
+                });
+            };
+
+            cerrarBtn.onclick = () => {
+                modal.classList.add("hidden");
+            };
+
+            // Cerrar modal al hacer click fuera
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            };
+
+            form.addEventListener("submit", function(e) {
+                // Mostrar mensaje de confirmación después del submit
+                setTimeout(() => {
+                    modal.classList.add("hidden");
+                }, 300);
+            });
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+.env
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Python
+__pycache__/
+*.pyc

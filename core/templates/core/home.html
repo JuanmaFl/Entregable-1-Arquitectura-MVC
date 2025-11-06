@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "Inicio" %} | Peering Latam - {% trans "Conectividad Inteligente" %}{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION MODERNO -->
+<section class="hero">
+    <div class="container">
+        <h1 data-aos="fade-down" data-aos-duration="800">
+            {% trans "Conectividad más inteligente para Latinoamérica" %}
+        </h1>
+        <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+            {% trans "Somos" %} <strong>Peering Latam</strong>, {% trans "una empresa especializada en reducir costos y optimizar el tráfico de red. Conectamos proveedores, contenidos y usuarios de forma más eficiente." %}
+        </p>
+        <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="600">
+            <a href="{% url 'catalogo' %}" class="btn" style="margin-top: 1rem;">
+                {% trans "Explorar Catálogo" %} 🚀
+            </a>
+        </div>
+
+        <!-- Video Presentación -->
+        <div class="video-wrapper" data-aos="fade-up" data-aos-delay="600" data-aos-duration="800" style="position: relative; z-index: 1;">
+            <video controls preload="metadata" poster="{% static 'core/img/video-poster.jpg' %}">
+                <source src="{% static 'core/video/peering.mp4' %}" type="video/mp4">
+                {% trans "Tu navegador no soporta videos HTML5." %}
+            </video>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="services">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            {% trans "Nuestros Servicios" %}
+        </h2>
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="{% static 'core/img/pmaas.png' %}" alt="PMaaS">
+                <h3>PMaaS</h3>
+                <p>{% trans "Metodología para análisis, evaluación e implementación del tráfico de contenidos." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="{% static 'core/img/ott.png' %}" alt="Monitoreo OTT">
+                <h3>{% trans "Monitoreo OTT" %}</h3>
+                <p>{% trans "Monitorea calidad en streaming y gaming, detecta fallos y mejora la experiencia." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="{% static 'core/img/cdn.png' %}" alt="CDN IPTV">
+                <h3>{% trans "CDN IPTV y Streaming" %}</h3>
+                <p>{% trans "Optimiza la entrega de video, reduce latencia y mejora el rendimiento." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="{% static 'core/img/datacenter.png' %}" alt="Centro de Datos">
+                <h3>{% trans "Centro de Datos" %}</h3>
+                <p>{% trans "Interconexión con ISPs y redes de contenido en Equinix SP4 y otros nodos clave." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="{% static 'core/img/ddos.png' %}" alt="Anti DDoS">
+                <h3>{% trans "Anti DDoS" %}</h3>
+                <p>{% trans "Protección adaptable según tamaño del proveedor para mantener disponibilidad." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="{% static 'core/img/cdnplan.png' %}" alt="Obtener CDN">
+                <h3>{% trans "Obtener un CDN" %}</h3>
+                <p>{% trans "Planificación técnica y financiera para instalar CDN propio o en alianza." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="{% static 'core/img/trafico.png' %}" alt="Análisis de Tráfico">
+                <h3>{% trans "Análisis de Tráfico" %}</h3>
+                <p>{% trans "Estudio gratuito para definir estrategias de optimización a medida." %}</p>
+            </div>
+
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="{% static 'core/img/consultoria.png' %}" alt="Consultoría">
+                <h3>{% trans "Consultoría" %}</h3>
+                <p>{% trans "Diseño e implementación de IXP, redes neutras, peering y seguridad." %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="productos" style="background: var(--bg-light);">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            {% trans "Nuestros Productos" %}
+        </h2>
+        <div class="productos-grid">
+            {% for producto in productos %}
+            <div class="producto-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <img src="{% static producto.imagen %}" alt="{{ producto.nombre }}">
+                <h3>{{ producto.nombre }}</h3>
+                <p>{{ producto.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section class="clientes">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            {% trans "Clientes que confían en nosotros" %}
+        </h2>
+        <div class="clientes-grid">
+            {% for cliente in clientes %}
+            <div class="cliente-card" data-aos="flip-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <img src="{% static cliente.logo %}" alt="{{ cliente.nombre }}">
+                <h4>{{ cliente.nombre }}</h4>
+                <p>{{ cliente.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section style="background: linear-gradient(135deg, #7CB342, #00ACC1); padding: 4rem 2rem; text-align: center; color: white;">
+    <div class="container" data-aos="zoom-in">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: white;">
+            {% trans "¿Listo para optimizar tu red?" %}
+        </h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">
+            {% trans "Contáctanos hoy y descubre cómo podemos ayudarte" %}
+        </p>
+        <a href="#abrir-modal" class="btn" style="background: white; color: #00ACC1;" onclick="document.getElementById('abrir-modal').click(); return false;">
+            {% trans "Agendar Consulta Gratuita" %} 📅
+        </a>
+    </div>
+</section>
+
+<style>
+    /* Mejoras específicas para home */
+    .hero {
+        min-height: auto;
+        padding: 4rem 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* CRÍTICO: Asegurar que el video no se superponga */
+    .video-wrapper {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 2rem;
+    }
+
+    /* Asegurar que las secciones siguientes tengan z-index mayor */
+    .services,
+    .productos,
+    .clientes {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Animación de las tarjetas al hacer scroll */
+    .service-card,
+    .producto-card,
+    .cliente-card {
+        will-change: transform;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Efecto parallax sutil en hero */
+    .hero::before,
+    .hero::after {
+        will-change: transform;
+        z-index: 0;
+    }
+
+    /* Optimización de video */
+    .video-wrapper video {
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+    }
+
+        .video-wrapper video:hover {
+            box-shadow: 0 12px 40px rgba(0, 172, 193, 0.3);
+        }
+</style>
+
+<script>
+    // Animaciones adicionales con anime.js
+    document.addEventListener('DOMContentLoaded', function () {
+        // Animar el título del hero con efecto de escritura
+        anime({
+            targets: '.hero h1',
+            opacity: [0, 1],
+            translateY: [-30, 0],
+            duration: 1000,
+            easing: 'easeOutExpo'
+        });
+
+        // Efecto parallax suave en el scroll
+        let ticking = false;
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                window.requestAnimationFrame(function () {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = document.querySelectorAll('.hero::before, .hero::after');
+
+                    // Parallax suave
+                    document.querySelector('.hero').style.transform = `translateY(${scrolled * 0.5}px)`;
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Contador animado (si tienes estadísticas)
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+    });
+</script>
+{% endblock %}

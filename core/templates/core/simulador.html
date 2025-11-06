@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Simulador de Red Inteligente | Peering Latam{% endblock %}
+
+{% block content %}
+<div class="site-content" style="padding: 3rem 0; background: linear-gradient(135deg, rgba(124, 179, 66, 0.03), rgba(0, 172, 193, 0.03));">
+    <div class="container">
+        <!-- Header del Simulador -->
+        <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-down">
+            <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #7CB342, #00ACC1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 24px rgba(0, 172, 193, 0.3);">
+                <span style="font-size: 3rem;">📊</span>
+            </div>
+            <h1 class="section-title" style="font-size: 2.5rem; margin-bottom: 1rem;">
+                Simulador de Red Inteligente
+            </h1>
+            <p style="color: var(--text-light); font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
+                Descubre cómo nuestros servicios pueden transformar el rendimiento de tu red.
+                Obtén un análisis personalizado con inteligencia artificial.
+            </p>
+        </div>
+
+        <!-- Formulario del Simulador -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div style="background: white; border-radius: var(--radius-xl); padding: 3rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);" data-aos="fade-up">
+
+                    <form method="post" id="simulador-form">
+                        {% csrf_token %}
+
+                        <!-- Sección: Datos de Tu Red -->
+                        <div class="form-section-header" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--primary-cyan); font-size: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1.8rem;">🌐</span>
+                                Datos Actuales de Tu Red
+                            </h3>
+                            <p style="color: var(--text-light); font-size: 0.95rem;">
+                                Ingresa las métricas actuales de tu infraestructura de red
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.latencia_actual.id_for_label }}" class="form-label">
+                                        <strong>{{ form.latencia_actual.label }}</strong>
+                                        <span style="color: #EF5350;">*</span>
+                                    </label>
+                                    {{ form.latencia_actual }}
+                                    <small class="form-text">{{ form.latencia_actual.help_text }}</small>
+                                    {% if form.latencia_actual.errors %}
+                                    <div class="text-danger">{{ form.latencia_actual.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.perdida_paquetes_actual.id_for_label }}" class="form-label">
+                                        <strong>{{ form.perdida_paquetes_actual.label }}</strong>
+                                        <span style="color: #EF5350;">*</span>
+                                    </label>
+                                    {{ form.perdida_paquetes_actual }}
+                                    <small class="form-text">{{ form.perdida_paquetes_actual.help_text }}</small>
+                                    {% if form.perdida_paquetes_actual.errors %}
+                                    <div class="text-danger">{{ form.perdida_paquetes_actual.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.ancho_banda_actual.id_for_label }}" class="form-label">
+                                        <strong>{{ form.ancho_banda_actual.label }}</strong>
+                                        <span style="color: #EF5350;">*</span>
+                                    </label>
+                                    {{ form.ancho_banda_actual }}
+                                    <small class="form-text">{{ form.ancho_banda_actual.help_text }}</small>
+                                    {% if form.ancho_banda_actual.errors %}
+                                    <div class="text-danger">{{ form.ancho_banda_actual.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.trafico_pico.id_for_label }}" class="form-label">
+                                        <strong>{{ form.trafico_pico.label }}</strong>
+                                        <span style="color: #EF5350;">*</span>
+                                    </label>
+                                    {{ form.trafico_pico }}
+                                    <small class="form-text">{{ form.trafico_pico.help_text }}</small>
+                                    {% if form.trafico_pico.errors %}
+                                    <div class="text-danger">{{ form.trafico_pico.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="{{ form.num_usuarios.id_for_label }}" class="form-label">
+                                        <strong>{{ form.num_usuarios.label }}</strong>
+                                        <span style="color: #EF5350;">*</span>
+                                    </label>
+                                    {{ form.num_usuarios }}
+                                    <small class="form-text">{{ form.num_usuarios.help_text }}</small>
+                                    {% if form.num_usuarios.errors %}
+                                    <div class="text-danger">{{ form.num_usuarios.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="margin: 3rem 0; border-color: var(--border-color);">
+
+                        <!-- Sección: Servicios -->
+                        <div class="form-section-header" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--primary-cyan); font-size: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1.8rem;">⚙️</span>
+                                Selecciona Nuestros Servicios
+                            </h3>
+                            <p style="color: var(--text-light); font-size: 0.95rem;">
+                                Elige los servicios que deseas simular para tu red
+                            </p>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="service-checkbox-card">
+                                    {{ form.servicio_pmaas }}
+                                    <label for="{{ form.servicio_pmaas.id_for_label }}" class="service-label">
+                                        <strong>{{ form.servicio_pmaas.label }}</strong>
+                                        <p>Optimiza el enrutamiento y reduce costos de tráfico</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="service-checkbox-card">
+                                    {{ form.servicio_cdn }}
+                                    <label for="{{ form.servicio_cdn.id_for_label }}" class="service-label">
+                                        <strong>{{ form.servicio_cdn.label }}</strong>
+                                        <p>Mejora la entrega de contenido multimedia</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="service-checkbox-card">
+                                    {{ form.servicio_ddos }}
+                                    <label for="{{ form.servicio_ddos.id_for_label }}" class="service-label">
+                                        <strong>{{ form.servicio_ddos.label }}</strong>
+                                        <p>Protege tu red contra ataques DDoS</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="service-checkbox-card">
+                                    {{ form.servicio_analisis }}
+                                    <label for="{{ form.servicio_analisis.id_for_label }}" class="service-label">
+                                        <strong>{{ form.servicio_analisis.label }}</strong>
+                                        <p>Monitoreo y análisis detallado de tráfico</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-error" style="margin-top: 1.5rem;">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Botón de Envío -->
+                        <div style="text-align: center; margin-top: 3rem;">
+                            <button type="submit" class="btn" style="min-width: 250px; font-size: 1.1rem; padding: 1rem 2rem;">
+                                🚀 Generar Simulación con IA
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beneficios del Simulador -->
+        <div style="margin-top: 4rem;" data-aos="fade-up">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">Análisis con IA</h4>
+                        <p style="color: var(--text-light);">Resultados generados con inteligencia artificial avanzada</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">Métricas Reales</h4>
+                        <p style="color: var(--text-light);">Proyecciones basadas en casos de éxito reales</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">ROI Calculado</h4>
+                        <p style="color: var(--text-light);">Estimación de retorno de inversión personalizado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--bg-light);
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 172, 193, 0.1);
+        }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+
+    .form-text {
+        display: block;
+        margin-top: 0.25rem;
+        color: var(--text-light);
+        font-size: 0.875rem;
+    }
+
+    .service-checkbox-card {
+        background: var(--gradient-card);
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .service-checkbox-card:hover {
+            border-color: var(--primary-cyan);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .service-checkbox-card input[type="checkbox"] {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+            .service-checkbox-card input[type="checkbox"]:checked + .service-label {
+                color: var(--primary-cyan);
+            }
+
+    .service-label {
+        cursor: pointer;
+        margin: 0;
+    }
+
+        .service-label strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .service-label p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+    .text-danger {
+        color: #EF5350;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<script>
+    // Animación del formulario
+    document.getElementById('simulador-form').addEventListener('submit', function(e) {
+        const btn = this.querySelector('button[type="submit"]');
+        btn.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⏳</span> Generando simulación...';
+        btn.disabled = true;
+    });
+
+    // Animación de las tarjetas de servicio
+    document.querySelectorAll('.service-checkbox-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'INPUT') {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+            }
+        });
+    });
+</script>
+
+<style>
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

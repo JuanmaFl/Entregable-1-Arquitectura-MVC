@@ -1,0 +1,14 @@
+*.pyc
+__pycache__
+db.sqlite3
+.env
+.git
+.gitignore
+.vscode
+.idea
+venv
+env
+*.log
+staticfiles
+.DS_Store
+node_modules

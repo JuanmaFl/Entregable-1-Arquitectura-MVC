@@ -1,0 +1,12 @@
+Django==5.1.6
+python-decouple==3.8
+openai==0.28.0
+Pillow==11.0.0
+python-dateutil==2.9.0.post0
+requests==2.32.3
+reportlab==4.2.5
+gunicorn==23.0.0
+dateparser
+matplotlib>=3.8.0
+pillow>=10.0.0
+reportlab>=4.0.0
