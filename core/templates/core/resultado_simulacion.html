@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Resultados de Simulación - Peering Latam{% endblock %}
+{% block title %}{% trans "Resultados de Simulación" %} - Peering Latam{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -243,14 +244,14 @@
 <div class="simulador-resultados" data-aos="fade-up">
     <!-- Header -->
     <div class="resultado-header">
-        <h1>📊 Resultados de tu Simulación</h1>
-        <p>Análisis completo del impacto de nuestros servicios en tu red</p>
-        <p style="color: #999; font-size: 0.9rem;">Simulación realizada el {{ simulacion.fecha_creacion|date:"d/m/Y H:i" }}</p>
+        <h1>📊 {% trans "Resultados de tu Simulación" %}</h1>
+        <p>{% trans "Análisis completo del impacto de nuestros servicios en tu red" %}</p>
+        <p style="color: #999; font-size: 0.9rem;">{% trans "Simulación realizada el" %} {{ simulacion.fecha_creacion|date:"d/m/Y H:i" }}</p>
     </div>
 
     <!-- Servicios Activos -->
     <div class="servicios-activos">
-        <h4 style="width: 100%; color: #333;">🔧 Servicios Seleccionados:</h4>
+        <h4 style="width: 100%; color: #333;">🔧 {% trans "Servicios Seleccionados" %}:</h4>
         {% for servicio in simulacion.servicios_seleccionados %}
         <span class="servicio-badge">{{ servicio }}</span>
         {% endfor %}
@@ -259,48 +260,48 @@
     <!-- Métricas Principales -->
     <div class="metricas-grid">
         <div class="metrica-card" data-aos="zoom-in" data-aos-delay="100">
-            <span class="metrica-label">🚀 Latencia</span>
+            <span class="metrica-label">🚀 {% trans "Latencia" %}</span>
             <span class="metrica-valor">{{ simulacion.latencia_mejorada|floatformat:2 }} ms</span>
-            <span class="metrica-mejora">↓ {{ simulacion.mejora_latencia_porcentaje|floatformat:1 }}% de mejora</span>
+            <span class="metrica-mejora">↓ {{ simulacion.mejora_latencia_porcentaje|floatformat:1 }}% {% trans "de mejora" %}</span>
         </div>
 
         <div class="metrica-card" data-aos="zoom-in" data-aos-delay="200">
-            <span class="metrica-label">📦 Pérdida de Paquetes</span>
+            <span class="metrica-label">📦 {% trans "Pérdida de Paquetes" %}</span>
             <span class="metrica-valor">{{ simulacion.perdida_paquetes_mejorada|floatformat:2 }}%</span>
-            <span class="metrica-mejora">↓ {{ simulacion.mejora_perdida_paquetes_porcentaje|floatformat:1 }}% de mejora</span>
+            <span class="metrica-mejora">↓ {{ simulacion.mejora_perdida_paquetes_porcentaje|floatformat:1 }}% {% trans "de mejora" %}</span>
         </div>
 
         <div class="metrica-card" data-aos="zoom-in" data-aos-delay="300">
-            <span class="metrica-label">📊 Ancho de Banda</span>
+            <span class="metrica-label">📊 {% trans "Ancho de Banda" %}</span>
             <span class="metrica-valor">{{ simulacion.ancho_banda_mejorado|floatformat:0 }} Mbps</span>
-            <span class="metrica-mejora">Optimizado para {{ simulacion.num_usuarios }} usuarios</span>
+            <span class="metrica-mejora">{% trans "Optimizado para" %} {{ simulacion.num_usuarios }} {% trans "usuarios" %}</span>
         </div>
 
         <div class="metrica-card {% if simulacion.mejora_porcentual >= 40 %}success{% else %}warning{% endif %}" data-aos="zoom-in" data-aos-delay="400">
-            <span class="metrica-label">⚡ Mejora Global</span>
+            <span class="metrica-label">⚡ {% trans "Mejora Global" %}</span>
             <span class="metrica-valor">{{ simulacion.mejora_porcentual|floatformat:1 }}%</span>
-            <span class="metrica-mejora">Eficiencia de la red</span>
+            <span class="metrica-mejora">{% trans "Eficiencia de la red" %}</span>
         </div>
     </div>
 
     <!-- Gráfico Comparativo -->
     <div class="grafico-container" data-aos="fade-up" data-aos-delay="500">
-        <h3>📈 Comparación Antes vs Después</h3>
+        <h3>📈 {% trans "Comparación Antes vs Después" %}</h3>
         <canvas id="graficoComparacion" width="400" height="200"></canvas>
     </div>
 
     <!-- Costo y ROI -->
     <div class="costo-roi-grid" data-aos="fade-up" data-aos-delay="600">
         <div class="info-card">
-            <div class="info-card-label">💰 Inversión Mensual</div>
+            <div class="info-card-label">💰 {% trans "Inversión Mensual" %}</div>
             <div class="info-card-valor">${{ simulacion.costo_estimado_mensual|floatformat:0 }}</div>
         </div>
         <div class="info-card">
-            <div class="info-card-label">📅 ROI Estimado</div>
-            <div class="info-card-valor">{{ simulacion.roi_estimado_meses }} meses</div>
+            <div class="info-card-label">📅 {% trans "ROI Estimado" %}</div>
+            <div class="info-card-valor">{{ simulacion.roi_estimado_meses }} {% trans "meses" %}</div>
         </div>
         <div class="info-card">
-            <div class="info-card-label">👥 Usuarios Atendidos</div>
+            <div class="info-card-label">👥 {% trans "Usuarios Atendidos" %}</div>
             <div class="info-card-valor">{{ simulacion.num_usuarios }}</div>
         </div>
     </div>
@@ -308,7 +309,7 @@
     <!-- Análisis IA -->
     {% if simulacion.analisis_ia %}
     <div class="analisis-ia-section" data-aos="fade-up" data-aos-delay="700">
-        <h3>🤖 Análisis Inteligente</h3>
+        <h3>🤖 {% trans "Análisis Inteligente" %}</h3>
         <div class="analisis-texto">{{ simulacion.analisis_ia }}</div>
     </div>
     {% endif %}
@@ -316,7 +317,7 @@
     <!-- Recomendaciones IA -->
     {% if simulacion.recomendaciones_ia %}
     <div class="recomendaciones-section" data-aos="fade-up" data-aos-delay="800">
-        <h3>💡 Recomendaciones Personalizadas</h3>
+        <h3>💡 {% trans "Recomendaciones Personalizadas" %}</h3>
         <div class="analisis-texto">{{ simulacion.recomendaciones_ia }}</div>
     </div>
     {% endif %}
@@ -324,15 +325,15 @@
     <!-- Acciones -->
     <div class="acciones-resultados" data-aos="fade-up" data-aos-delay="900">
         <a href="{% url 'simulador_red' %}" class="btn btn-secondary">
-            🔄 Nueva Simulación
+            🔄 {% trans "Nueva Simulación" %}
         </a>
         {% if user.is_authenticated %}
         <a href="{% url 'mis_simulaciones' %}" class="btn btn-secondary">
-            📋 Mis Simulaciones
+            📋 {% trans "Mis Simulaciones" %}
         </a>
         {% endif %}
         <a href="{% url 'home' %}" class="btn btn-primary">
-            📞 Contactar con Expertos
+            📞 {% trans "Contactar con Expertos" %}
         </a>
     </div>
 </div>
@@ -344,10 +345,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Datos del gráfico desde Django
     const datosGrafico = {{ datos_grafico|safe }};
 
-    // Crear gráfico comparativo
     const ctx = document.getElementById('graficoComparacion').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
@@ -355,14 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: datosGrafico.labels,
             datasets: [
                 {
-                    label: 'Antes',
+                    label: '{% trans "Antes" %}',
                     data: datosGrafico.antes,
                     backgroundColor: 'rgba(244, 67, 54, 0.7)',
                     borderColor: 'rgba(244, 67, 54, 1)',
                     borderWidth: 2
                 },
                 {
-                    label: 'Después',
+                    label: '{% trans "Después" %}',
                     data: datosGrafico.despues,
                     backgroundColor: 'rgba(76, 175, 80, 0.7)',
                     borderColor: 'rgba(76, 175, 80, 1)',

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Mis Simulaciones - Peering Latam{% endblock %}
+{% block title %}{% trans "Mis Simulaciones" %} - Peering Latam{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -216,8 +217,8 @@
 <div class="mis-simulaciones-container" data-aos="fade-up">
     <!-- Header -->
     <div class="header-simulaciones">
-        <h1>📋 Mis Simulaciones</h1>
-        <p>Historial completo de tus análisis de red</p>
+        <h1>📋 {% trans "Mis Simulaciones" %}</h1>
+        <p>{% trans "Historial completo de tus análisis de red" %}</p>
     </div>
 
     {% if simulaciones %}
@@ -228,7 +229,7 @@
             <!-- Header -->
             <div class="simulacion-header">
                 <div>
-                    <span class="simulacion-id">🔍 Simulación #{{ sim.id }}</span>
+                    <span class="simulacion-id">🔍 {% trans "Simulación" %} #{{ sim.id }}</span>
                 </div>
                 <span class="simulacion-fecha">📅 {{ sim.fecha_creacion|date:"d/m/Y H:i" }}</span>
             </div>
@@ -243,19 +244,19 @@
             <!-- Métricas -->
             <div class="simulacion-metricas">
                 <div class="metrica-mini">
-                    <span class="metrica-mini-label">Latencia</span>
+                    <span class="metrica-mini-label">{% trans "Latencia" %}</span>
                     <span class="metrica-mini-valor">{{ sim.latencia_mejorada|floatformat:1 }} ms</span>
                 </div>
                 <div class="metrica-mini">
-                    <span class="metrica-mini-label">Pérdida</span>
+                    <span class="metrica-mini-label">{% trans "Pérdida" %}</span>
                     <span class="metrica-mini-valor">{{ sim.perdida_paquetes_mejorada|floatformat:1 }}%</span>
                 </div>
                 <div class="metrica-mini">
-                    <span class="metrica-mini-label">Mejora</span>
+                    <span class="metrica-mini-label">{% trans "Mejora" %}</span>
                     <span class="metrica-mini-valor">{{ sim.mejora_porcentual|floatformat:0 }}%</span>
                 </div>
                 <div class="metrica-mini">
-                    <span class="metrica-mini-label">Inversión</span>
+                    <span class="metrica-mini-label">{% trans "Inversión" %}</span>
                     <span class="metrica-mini-valor">${{ sim.costo_estimado_mensual|floatformat:0 }}</span>
                 </div>
             </div>
@@ -263,10 +264,10 @@
             <!-- Acciones -->
             <div class="simulacion-acciones">
                 <a href="{% url 'resultado_simulacion' sim.id %}" class="btn-mini btn-ver">
-                    👁️ Ver Resultados
+                    👁️ {% trans "Ver Resultados" %}
                 </a>
                 <button onclick="confirmarEliminar({{ sim.id }})" class="btn-mini btn-eliminar">
-                    🗑️ Eliminar
+                    🗑️ {% trans "Eliminar" %}
                 </button>
             </div>
         </div>
@@ -276,7 +277,7 @@
     <!-- Botón Nueva Simulación -->
     <div style="text-align: center; margin-top: 3rem;">
         <a href="{% url 'simulador_red' %}" class="btn-nueva-simulacion" data-aos="fade-up">
-            ➕ Nueva Simulación
+            ➕ {% trans "Nueva Simulación" %}
         </a>
     </div>
 
@@ -284,10 +285,10 @@
     <!-- Estado Vacío -->
     <div class="empty-state" data-aos="zoom-in">
         <div class="empty-state-icon">📊</div>
-        <h2>Aún no tienes simulaciones</h2>
-        <p>Comienza a analizar tu red y descubre cómo mejorarla con nuestros servicios</p>
+        <h2>{% trans "Aún no tienes simulaciones" %}</h2>
+        <p>{% trans "Comienza a analizar tu red y descubre cómo mejorarla con nuestros servicios" %}</p>
         <a href="{% url 'simulador_red' %}" class="btn-nueva-simulacion">
-            🚀 Crear Primera Simulación
+            🚀 {% trans "Crear Primera Simulación" %}
         </a>
     </div>
     {% endif %}
@@ -296,28 +297,10 @@
 
 {% block extra_js %}
 <script>
-function confirmarEliminar(simulacionId) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta simulación?')) {
-        // Aquí implementarías la lógica de eliminación
-        // Por ahora solo mostramos un alert
-        alert('Función de eliminación no implementada aún. ID: ' + simulacionId);
-
-        // Ejemplo de implementación:
-        /*
-        fetch(`/simulador/eliminar/${simulacionId}/`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            }
-        });
-        */
+    function confirmarEliminar(simulacionId) {
+        if (confirm('{% trans "¿Estás seguro de que deseas eliminar esta simulación?" %}')) {
+            alert('{% trans "Función de eliminación no implementada aún" %}. ID: ' + simulacionId);
+        }
     }
-}
 </script>
 {% endblock %}

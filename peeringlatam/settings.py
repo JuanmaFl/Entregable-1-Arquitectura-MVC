@@ -121,6 +121,7 @@ LANGUAGE_CODE = 'es'  # ✅ Idioma por defecto: Español
 LANGUAGES = [
     ('es', 'Español'),
     ('en', 'English'),
+    ('pt', 'Português'),
 ]
 
 LOCALE_PATHS = [

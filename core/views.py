@@ -23,28 +23,30 @@ openai.api_key = settings.OPENAI_API_KEY
 
 # Juan Manuel Florez
 
+from django.utils.translation import gettext_lazy as _
+
 def home(request):
     horas = [f"{h:02d}:00" for h in range(8, 20)]
     clientes = [
-        {'nombre': 'Tigo', 'descripcion': 'Proveedor regional de telecomunicaciones.', 'logo': 'core/img/clientes/tigo.png'},
-        {'nombre': 'Ufinet', 'descripcion': 'Operador mayorista de fibra óptica.', 'logo': 'core/img/clientes/ufinet.jpg'},
-        {'nombre': 'Mundo Pacífico', 'descripcion': 'Proveedor de internet y TV en Chile.', 'logo': 'core/img/clientes/mundo.jpg'},
-        {'nombre': 'Colombia Más', 'descripcion': 'Red nacional para servicios residenciales.', 'logo': 'core/img/clientes/colombiamas.jpg'},
+        {'nombre': 'Tigo', 'descripcion': _('Proveedor regional de telecomunicaciones.'), 'logo': 'core/img/clientes/tigo.png'},
+        {'nombre': 'Ufinet', 'descripcion': _('Operador mayorista de fibra óptica.'), 'logo': 'core/img/clientes/ufinet.jpg'},
+        {'nombre': 'Mundo Pacífico', 'descripcion': _('Proveedor de internet y TV en Chile.'), 'logo': 'core/img/clientes/mundo.jpg'},
+        {'nombre': 'Colombia Más', 'descripcion': _('Red nacional para servicios residenciales.'), 'logo': 'core/img/clientes/colombiamas.jpg'},
     ]
     productos = [
         {
             'nombre': 'Flow',
-            'descripcion': 'Visualización de tráfico con mapas de calor y flujos de red para detectar cuellos de botella.',
+            'descripcion': _('Visualización de tráfico con mapas de calor y flujos de red para detectar cuellos de botella.'),
             'imagen': 'core/img/productos/flow.png'
         },
         {
             'nombre': 'Grafana',
-            'descripcion': 'Dashboard para monitorear servicios, tráfico, métricas y alarmas desde diversas fuentes.',
+            'descripcion': _('Dashboard para monitorear servicios, tráfico, métricas y alarmas desde diversas fuentes.'),
             'imagen': 'core/img/productos/grafana.png'
         },
         {
             'nombre': 'MOTTS',
-            'descripcion': 'Monitoreo de tráfico OTT especializado en gaming, streaming y contenido sensible.',
+            'descripcion': _('Monitoreo de tráfico OTT especializado en gaming, streaming y contenido sensible.'),
             'imagen': 'core/img/productos/motts.png'
         },
     ]
@@ -214,12 +216,28 @@ def simulador_red(request):
     
     return render(request, 'core/simulador.html', context)
 
+from django.utils.translation import get_language
+
 @login_required
+
+
 def resultado_simulacion(request, simulacion_id):
     """
     Muestra los resultados de una simulación
     """
     simulacion = get_object_or_404(SimulacionRed, id=simulacion_id)
+    
+    # Detectar idioma actual
+    idioma = get_language()
+    
+    # Regenerar análisis si no existe o si cambió el idioma
+    if not simulacion.analisis_ia or request.GET.get('regenerar'):
+        try:
+            simulacion.analisis_ia = AnalizadorIA.generar_analisis(simulacion, idioma)
+            simulacion.recomendaciones_ia = AnalizadorIA.generar_recomendaciones(simulacion, idioma)
+            simulacion.save()
+        except Exception as e:
+            print(f"Error al generar análisis IA: {e}")
     
     # Preparar datos para gráficos
     datos_grafico = {
@@ -244,7 +262,6 @@ def resultado_simulacion(request, simulacion_id):
     }
     
     return render(request, 'core/resultado_simulacion.html', context)
-
 
 @login_required
 def mis_simulaciones(request):

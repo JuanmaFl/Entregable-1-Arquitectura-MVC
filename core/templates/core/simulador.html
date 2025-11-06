@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load i18n %}
-{% block title %}Simulador de Red Inteligente | Peering Latam{% endblock %}
+
+{% block title %}{% trans "Simulador de Red Inteligente" %} | Peering Latam{% endblock %}
 
 {% block content %}
 <div class="site-content" style="padding: 3rem 0; background: linear-gradient(135deg, rgba(124, 179, 66, 0.03), rgba(0, 172, 193, 0.03));">
@@ -12,11 +13,10 @@
                 <span style="font-size: 3rem;">📊</span>
             </div>
             <h1 class="section-title" style="font-size: 2.5rem; margin-bottom: 1rem;">
-                Simulador de Red Inteligente
+                {% trans "Simulador de Red Inteligente" %}
             </h1>
             <p style="color: var(--text-light); font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
-                Descubre cómo nuestros servicios pueden transformar el rendimiento de tu red.
-                Obtén un análisis personalizado con inteligencia artificial.
+                {% trans "Descubre cómo nuestros servicios pueden transformar el rendimiento de tu red. Obtén un análisis personalizado con inteligencia artificial." %}
             </p>
         </div>
 
@@ -32,10 +32,10 @@
                         <div class="form-section-header" style="margin-bottom: 2rem;">
                             <h3 style="color: var(--primary-cyan); font-size: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 1.8rem;">🌐</span>
-                                Datos Actuales de Tu Red
+                                {% trans "Datos Actuales de Tu Red" %}
                             </h3>
                             <p style="color: var(--text-light); font-size: 0.95rem;">
-                                Ingresa las métricas actuales de tu infraestructura de red
+                                {% trans "Ingresa las métricas actuales de tu infraestructura de red" %}
                             </p>
                         </div>
 
@@ -117,10 +117,10 @@
                         <div class="form-section-header" style="margin-bottom: 2rem;">
                             <h3 style="color: var(--primary-cyan); font-size: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 1.8rem;">⚙️</span>
-                                Selecciona Nuestros Servicios
+                                {% trans "Selecciona Nuestros Servicios" %}
                             </h3>
                             <p style="color: var(--text-light); font-size: 0.95rem;">
-                                Elige los servicios que deseas simular para tu red
+                                {% trans "Elige los servicios que deseas simular para tu red" %}
                             </p>
                         </div>
 
@@ -130,7 +130,7 @@
                                     {{ form.servicio_pmaas }}
                                     <label for="{{ form.servicio_pmaas.id_for_label }}" class="service-label">
                                         <strong>{{ form.servicio_pmaas.label }}</strong>
-                                        <p>Optimiza el enrutamiento y reduce costos de tráfico</p>
+                                        <p>{% trans "Optimiza el enrutamiento y reduce costos de tráfico" %}</p>
                                     </label>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                                     {{ form.servicio_cdn }}
                                     <label for="{{ form.servicio_cdn.id_for_label }}" class="service-label">
                                         <strong>{{ form.servicio_cdn.label }}</strong>
-                                        <p>Mejora la entrega de contenido multimedia</p>
+                                        <p>{% trans "Mejora la entrega de contenido multimedia" %}</p>
                                     </label>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                     {{ form.servicio_ddos }}
                                     <label for="{{ form.servicio_ddos.id_for_label }}" class="service-label">
                                         <strong>{{ form.servicio_ddos.label }}</strong>
-                                        <p>Protege tu red contra ataques DDoS</p>
+                                        <p>{% trans "Protege tu red contra ataques DDoS" %}</p>
                                     </label>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                                     {{ form.servicio_analisis }}
                                     <label for="{{ form.servicio_analisis.id_for_label }}" class="service-label">
                                         <strong>{{ form.servicio_analisis.label }}</strong>
-                                        <p>Monitoreo y análisis detallado de tráfico</p>
+                                        <p>{% trans "Monitoreo y análisis detallado de tráfico" %}</p>
                                     </label>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                         <!-- Botón de Envío -->
                         <div style="text-align: center; margin-top: 3rem;">
                             <button type="submit" class="btn" style="min-width: 250px; font-size: 1.1rem; padding: 1rem 2rem;">
-                                🚀 Generar Simulación con IA
+                                🚀 {% trans "Generar Simulación con IA" %}
                             </button>
                         </div>
                     </form>
@@ -189,22 +189,22 @@
                 <div class="col-md-4">
                     <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
-                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">Análisis con IA</h4>
-                        <p style="color: var(--text-light);">Resultados generados con inteligencia artificial avanzada</p>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">{% trans "Análisis con IA" %}</h4>
+                        <p style="color: var(--text-light);">{% trans "Resultados generados con inteligencia artificial avanzada" %}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
-                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">Métricas Reales</h4>
-                        <p style="color: var(--text-light);">Proyecciones basadas en casos de éxito reales</p>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">{% trans "Métricas Reales" %}</h4>
+                        <p style="color: var(--text-light);">{% trans "Proyecciones basadas en casos de éxito reales" %}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div style="text-align: center; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
-                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">ROI Calculado</h4>
-                        <p style="color: var(--text-light);">Estimación de retorno de inversión personalizado</p>
+                        <h4 style="color: var(--primary-cyan); margin-bottom: 0.5rem;">{% trans "ROI Calculado" %}</h4>
+                        <p style="color: var(--text-light);">{% trans "Estimación de retorno de inversión personalizado" %}</p>
                     </div>
                 </div>
             </div>
@@ -299,16 +299,14 @@
 </style>
 
 <script>
-    // Animación del formulario
-    document.getElementById('simulador-form').addEventListener('submit', function(e) {
+    document.getElementById('simulador-form').addEventListener('submit', function (e) {
         const btn = this.querySelector('button[type="submit"]');
-        btn.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⏳</span> Generando simulación...';
+        btn.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⏳</span> {% trans "Generando simulación..." %}';
         btn.disabled = true;
     });
 
-    // Animación de las tarjetas de servicio
     document.querySelectorAll('.service-checkbox-card').forEach(card => {
-        card.addEventListener('click', function(e) {
+        card.addEventListener('click', function (e) {
             if (e.target.tagName !== 'INPUT') {
                 const checkbox = this.querySelector('input[type="checkbox"]');
                 checkbox.checked = !checkbox.checked;

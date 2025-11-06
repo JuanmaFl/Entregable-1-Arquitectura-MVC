@@ -1,0 +1,890 @@
+# Portuguese translations for Peering Latam.
+# Copyright (C) 2025 Peering Latam
+# This file is distributed under the same license as the Peering Latam package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-05 23:10-0500\n"
+"PO-Revision-Date: 2025-11-05 23:30-0500\n"
+"Last-Translator: Peering Latam Team <info@peeringlatam.com>\n"
+"Language-Team: Portuguese\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\templates\accounts\login.html:3
+#: .\accounts\templates\accounts\login.html:20
+msgid "Iniciar Sesión"
+msgstr "Entrar"
+
+#: .\accounts\templates\accounts\login.html:10
+#: .\accounts\templates\accounts\signup.html:10
+#: .\core\templates\core\carrito.html:11 .\core\templates\core\catalogo.html:16
+#: .\templates\base.html:74
+msgid "Home"
+msgstr "Início"
+
+#: .\accounts\templates\accounts\login.html:11
+msgid "Login"
+msgstr "Login"
+
+#: .\accounts\templates\accounts\login.html:21
+msgid "Bienvenido de nuevo a Peering Latam"
+msgstr "Bem-vindo de volta ao Peering Latam"
+
+#: .\accounts\templates\accounts\login.html:42
+msgid "Correo Electrónico"
+msgstr "E-mail"
+
+#: .\accounts\templates\accounts\login.html:49
+msgid "tu@email.com"
+msgstr "voce@email.com"
+
+#: .\accounts\templates\accounts\login.html:57
+msgid "Contraseña"
+msgstr "Senha"
+
+#: .\accounts\templates\accounts\login.html:63
+msgid "••••••••"
+msgstr "••••••••"
+
+#: .\accounts\templates\accounts\login.html:69
+msgid "Entrar"
+msgstr "Entrar"
+
+#: .\accounts\templates\accounts\login.html:76
+msgid "¿No tienes cuenta?"
+msgstr "Não tem conta?"
+
+#: .\accounts\templates\accounts\login.html:79
+msgid "Regístrate aquí"
+msgstr "Cadastre-se aqui"
+
+#: .\accounts\templates\accounts\login.html:142
+msgid "Ingresando..."
+msgstr "Entrando..."
+
+#: .\accounts\templates\accounts\signup.html:3
+#: .\accounts\templates\accounts\signup.html:11
+msgid "Registro"
+msgstr "Cadastro"
+
+#: .\accounts\templates\accounts\signup.html:20
+msgid "Crear Cuenta"
+msgstr "Criar Conta"
+
+#: .\accounts\templates\accounts\signup.html:21
+msgid "Únete a la comunidad de Peering Latam"
+msgstr "Junte-se à comunidade Peering Latam"
+
+#: .\accounts\templates\accounts\signup.html:74 .\templates\base.html:128
+msgid "Registrarse"
+msgstr "Cadastrar"
+
+#: .\accounts\templates\accounts\signup.html:81
+msgid "¿Ya tienes cuenta?"
+msgstr "Já tem conta?"
+
+#: .\accounts\templates\accounts\signup.html:84
+msgid "Inicia sesión aquí"
+msgstr "Entre aqui"
+
+#: .\accounts\templates\accounts\signup.html:207
+msgid "Registrando..."
+msgstr "Cadastrando..."
+
+#: .\core\forms.py:25
+msgid "Latencia Actual"
+msgstr "Latência Atual"
+
+#: .\core\forms.py:26
+msgid "Pérdida de Paquetes Actual"
+msgstr "Perda de Pacotes Atual"
+
+#: .\core\forms.py:27
+msgid "Ancho de Banda Actual"
+msgstr "Largura de Banda Atual"
+
+#: .\core\forms.py:28
+msgid "Tráfico en Hora Pico"
+msgstr "Tráfego em Horário de Pico"
+
+#: .\core\forms.py:29
+msgid "Número de Usuarios Concurrentes"
+msgstr "Número de Usuários Simultâneos"
+
+#: .\core\forms.py:30
+msgid "PMaaS - Optimización de Tráfico"
+msgstr "PMaaS - Otimização de Tráfego"
+
+#: .\core\forms.py:31 .\core\templates\core\home.html:54
+msgid "CDN IPTV y Streaming"
+msgstr "CDN IPTV e Streaming"
+
+#: .\core\forms.py:32
+msgid "Protección Anti DDoS"
+msgstr "Proteção Anti DDoS"
+
+#: .\core\forms.py:33
+msgid "Análisis de Tráfico Avanzado"
+msgstr "Análise de Tráfego Avançada"
+
+#: .\core\forms.py:82
+msgid "Tiempo de respuesta de tu red en milisegundos (ms)"
+msgstr "Tempo de resposta da sua rede em milissegundos (ms)"
+
+#: .\core\forms.py:83
+msgid "Porcentaje de paquetes perdidos (%)"
+msgstr "Porcentagem de pacotes perdidos (%)"
+
+#: .\core\forms.py:84
+msgid "Velocidad de conexión en Megabits por segundo (Mbps)"
+msgstr "Velocidade de conexão em Megabits por segundo (Mbps)"
+
+#: .\core\forms.py:85
+msgid "Tráfico máximo en horas punta (Gbps)"
+msgstr "Tráfego máximo em horários de pico (Gbps)"
+
+#: .\core\forms.py:86
+msgid "Cantidad de usuarios conectados simultáneamente"
+msgstr "Quantidade de usuários conectados simultaneamente"
+
+#: .\core\forms.py:92
+msgid "La latencia no puede ser negativa"
+msgstr "A latência não pode ser negativa"
+
+#: .\core\forms.py:94
+msgid "La latencia parece excesivamente alta. Por favor verifica."
+msgstr "A latência parece excessivamente alta. Por favor, verifique."
+
+#: .\core\forms.py:100
+msgid "La pérdida de paquetes debe estar entre 0 y 100%"
+msgstr "A perda de pacotes deve estar entre 0 e 100%"
+
+#: .\core\forms.py:106
+msgid "El ancho de banda debe ser mayor a 0"
+msgstr "A largura de banda deve ser maior que 0"
+
+#: .\core\forms.py:112
+msgid "El tráfico no puede ser negativo"
+msgstr "O tráfego não pode ser negativo"
+
+#: .\core\forms.py:118
+msgid "Debe haber al menos 1 usuario"
+msgstr "Deve haver pelo menos 1 usuário"
+
+#: .\core\forms.py:120
+msgid "El número de usuarios parece excesivo. Por favor verifica."
+msgstr "O número de usuários parece excessivo. Por favor, verifique."
+
+#: .\core\forms.py:135
+msgid "Debes seleccionar al menos un servicio para simular."
+msgstr "Você deve selecionar pelo menos um serviço para simular."
+
+#: .\core\models.py:8
+msgid "Nombre"
+msgstr "Nome"
+
+#: .\core\models.py:9
+msgid "Descripción"
+msgstr "Descrição"
+
+#: .\core\models.py:10
+msgid "Precio"
+msgstr "Preço"
+
+#: .\core\models.py:13 .\core\models.py:20
+#: .\core\templates\core\carrito.html:38
+msgid "Producto"
+msgstr "Produto"
+
+#: .\core\models.py:14
+msgid "Productos"
+msgstr "Produtos"
+
+#: .\core\models.py:21
+msgid "Imagen"
+msgstr "Imagem"
+
+#: .\core\models.py:24
+msgid "Imagen de Producto"
+msgstr "Imagem do Produto"
+
+#: .\core\models.py:25
+msgid "Imágenes de Productos"
+msgstr "Imagens dos Produtos"
+
+#: .\core\models.py:31
+msgid "Usuario"
+msgstr "Usuário"
+
+#: .\core\models.py:33
+msgid "Latencia actual (ms)"
+msgstr "Latência atual (ms)"
+
+#: .\core\models.py:33
+msgid "Latencia actual en ms"
+msgstr "Latência atual em ms"
+
+#: .\core\models.py:34
+msgid "Pérdida de paquetes actual (%)"
+msgstr "Perda de pacotes atual (%)"
+
+#: .\core\models.py:34
+msgid "Pérdida de paquetes actual en %"
+msgstr "Perda de pacotes atual em %"
+
+#: .\core\models.py:35
+msgid "Ancho de banda actual (Mbps)"
+msgstr "Largura de banda atual (Mbps)"
+
+#: .\core\models.py:35
+msgid "Ancho de banda actual en Mbps"
+msgstr "Largura de banda atual em Mbps"
+
+#: .\core\models.py:36
+msgid "Tráfico en hora pico (Gbps)"
+msgstr "Tráfego em horário de pico (Gbps)"
+
+#: .\core\models.py:36
+msgid "Tráfico en hora pico en Gbps"
+msgstr "Tráfego em horário de pico em Gbps"
+
+#: .\core\models.py:37
+msgid "Número de usuarios"
+msgstr "Número de usuários"
+
+#: .\core\models.py:37
+msgid "Número de usuarios concurrentes"
+msgstr "Número de usuários simultâneos"
+
+#: .\core\models.py:39
+msgid "PMaaS"
+msgstr "PMaaS"
+
+#: .\core\models.py:40
+msgid "CDN IPTV"
+msgstr "CDN IPTV"
+
+#: .\core\models.py:41 .\core\templates\core\home.html:66
+msgid "Anti DDoS"
+msgstr "Anti DDoS"
+
+#: .\core\models.py:42 .\core\models.py:76 .\core\templates\core\home.html:78
+msgid "Análisis de Tráfico"
+msgstr "Análise de Tráfego"
+
+#: .\core\models.py:44
+msgid "Latencia mejorada"
+msgstr "Latência melhorada"
+
+#: .\core\models.py:45
+msgid "Pérdida de paquetes mejorada"
+msgstr "Perda de pacotes melhorada"
+
+#: .\core\models.py:46
+msgid "Ancho de banda mejorado"
+msgstr "Largura de banda melhorada"
+
+#: .\core\models.py:47
+msgid "Mejora porcentual"
+msgstr "Melhoria percentual"
+
+#: .\core\models.py:49
+msgid "Análisis IA"
+msgstr "Análise IA"
+
+#: .\core\models.py:50
+msgid "Recomendaciones IA"
+msgstr "Recomendações IA"
+
+#: .\core\models.py:51
+msgid "Costo estimado mensual"
+msgstr "Custo estimado mensal"
+
+#: .\core\models.py:52
+msgid "ROI estimado (meses)"
+msgstr "ROI estimado (meses)"
+
+#: .\core\models.py:54
+msgid "Fecha de creación"
+msgstr "Data de criação"
+
+#: .\core\models.py:55
+msgid "IP del cliente"
+msgstr "IP do cliente"
+
+#: .\core\models.py:58
+msgid "Simulación de Red"
+msgstr "Simulação de Rede"
+
+#: .\core\models.py:59
+msgid "Simulaciones de Red"
+msgstr "Simulações de Rede"
+
+#: .\core\models.py:63
+msgid "Anónimo"
+msgstr "Anônimo"
+
+#: .\core\models.py:64 .\core\templates\core\mis_simulaciones.html:232
+msgid "Simulación"
+msgstr "Simulação"
+
+#: .\core\templates\core\carrito.html:3
+msgid "Carrito de Compras"
+msgstr "Carrinho de Compras"
+
+#: .\core\templates\core\carrito.html:12 .\core\templates\core\catalogo.html:17
+msgid "Catálogo"
+msgstr "Catálogo"
+
+#: .\core\templates\core\carrito.html:13
+msgid "Carrito"
+msgstr "Carrinho"
+
+#: .\core\templates\core\carrito.html:22
+msgid "Tu Carrito de Compras"
+msgstr "Seu Carrinho de Compras"
+
+#: .\core\templates\core\carrito.html:31
+msgid "Productos en tu carrito"
+msgstr "Produtos no seu carrinho"
+
+#: .\core\templates\core\carrito.html:39
+msgid "Cantidad"
+msgstr "Quantidade"
+
+#: .\core\templates\core\carrito.html:40
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: .\core\templates\core\carrito.html:41
+msgid "Acción"
+msgstr "Ação"
+
+#: .\core\templates\core\carrito.html:57
+msgid "c/u"
+msgstr "cada"
+
+#: .\core\templates\core\carrito.html:73
+#: .\core\templates\core\mis_simulaciones.html:270
+msgid "Eliminar"
+msgstr "Remover"
+
+#: .\core\templates\core\carrito.html:89
+msgid "Resumen del Pedido"
+msgstr "Resumo do Pedido"
+
+#: .\core\templates\core\carrito.html:94
+msgid "Subtotal:"
+msgstr "Subtotal:"
+
+#: .\core\templates\core\carrito.html:98
+msgid "Envío:"
+msgstr "Envio:"
+
+#: .\core\templates\core\carrito.html:99
+msgid "Gratis"
+msgstr "Grátis"
+
+#: .\core\templates\core\carrito.html:102
+#, python-format
+msgid "IVA (19%%):"
+msgstr "IVA (19%%):"
+
+#: .\core\templates\core\carrito.html:110
+msgid "Total:"
+msgstr "Total:"
+
+#: .\core\templates\core\carrito.html:118
+msgid " Funcionalidad de checkout en desarrollo"
+msgstr " Funcionalidade de checkout em desenvolvimento"
+
+#: .\core\templates\core\carrito.html:119
+msgid "Proceder al Pago"
+msgstr "Prosseguir para Pagamento"
+
+#: .\core\templates\core\carrito.html:123
+msgid "Seguir Comprando"
+msgstr "Continuar Comprando"
+
+#: .\core\templates\core\carrito.html:136
+msgid "Tu carrito está vacío"
+msgstr "Seu carrinho está vazio"
+
+#: .\core\templates\core\carrito.html:139
+msgid "¡Explora nuestro catálogo y encuentra productos increíbles!"
+msgstr "Explore nosso catálogo e encontre produtos incríveis!"
+
+#: .\core\templates\core\carrito.html:142
+msgid "Ir al Catálogo"
+msgstr "Ir ao Catálogo"
+
+#: .\core\templates\core\catalogo.html:4 .\core\templates\core\catalogo.html:23
+msgid "Catálogo de Productos"
+msgstr "Catálogo de Produtos"
+
+#: .\core\templates\core\catalogo.html:25
+msgid "Explora nuestra selección de productos y servicios especializados"
+msgstr "Explore nossa seleção de produtos e serviços especializados"
+
+#: .\core\templates\core\catalogo.html:32
+msgid "Descargar PDF"
+msgstr "Baixar PDF"
+
+#: .\core\templates\core\catalogo.html:35
+msgid "Descargar Excel"
+msgstr "Baixar Excel"
+
+#: .\core\templates\core\catalogo.html:60
+#: .\core\templates\core\catalogo.html:110
+msgid "Anterior"
+msgstr "Anterior"
+
+#: .\core\templates\core\catalogo.html:64
+#: .\core\templates\core\catalogo.html:128
+msgid "Siguiente"
+msgstr "Próximo"
+
+#: .\core\templates\core\catalogo.html:92
+msgid "Agregar al carrito"
+msgstr "Adicionar ao carrinho"
+
+#: .\core\templates\core\catalogo.html:107
+msgid "Primera"
+msgstr "Primeira"
+
+#: .\core\templates\core\catalogo.html:131
+msgid "Última"
+msgstr "Última"
+
+#: .\core\templates\core\catalogo.html:141
+msgid "Ver carrito"
+msgstr "Ver carrinho"
+
+#: .\core\templates\core\home.html:4
+msgid "Inicio"
+msgstr "Início"
+
+#: .\core\templates\core\home.html:4
+msgid "Conectividad Inteligente"
+msgstr "Conectividade Inteligente"
+
+#: .\core\templates\core\home.html:12
+msgid "Conectividad más inteligente para Latinoamérica"
+msgstr "Conectividade mais inteligente para América Latina"
+
+#: .\core\templates\core\home.html:15
+msgid "Somos"
+msgstr "Somos"
+
+#: .\core\templates\core\home.html:15
+msgid "una empresa especializada en reducir costos y optimizar el tráfico de red. Conectamos proveedores, contenidos y usuarios de forma más eficiente."
+msgstr "uma empresa especializada em reduzir custos e otimizar o tráfego de rede. Conectamos provedores, conteúdos e usuários de forma mais eficiente."
+
+#: .\core\templates\core\home.html:19
+msgid "Explorar Catálogo"
+msgstr "Explorar Catálogo"
+
+#: .\core\templates\core\home.html:27
+msgid "Tu navegador no soporta videos HTML5."
+msgstr "Seu navegador não suporta vídeos HTML5."
+
+#: .\core\templates\core\home.html:37
+msgid "Nuestros Servicios"
+msgstr "Nossos Serviços"
+
+#: .\core\templates\core\home.html:43
+msgid "Metodología para análisis, evaluación e implementación del tráfico de contenidos."
+msgstr "Metodologia para análise, avaliação e implementação de tráfego de conteúdo."
+
+#: .\core\templates\core\home.html:48
+msgid "Monitoreo OTT"
+msgstr "Monitoramento OTT"
+
+#: .\core\templates\core\home.html:49
+msgid "Monitorea calidad en streaming y gaming, detecta fallos y mejora la experiencia."
+msgstr "Monitora qualidade em streaming e gaming, detecta falhas e melhora a experiência."
+
+#: .\core\templates\core\home.html:55
+msgid "Optimiza la entrega de video, reduce latencia y mejora el rendimiento."
+msgstr "Otimiza a entrega de vídeo, reduz latência e melhora o desempenho."
+
+#: .\core\templates\core\home.html:60
+msgid "Centro de Datos"
+msgstr "Data Center"
+
+#: .\core\templates\core\home.html:61
+msgid "Interconexión con ISPs y redes de contenido en Equinix SP4 y otros nodos clave."
+msgstr "Interconexão com ISPs e redes de conteúdo em Equinix SP4 e outros nós principais."
+
+#: .\core\templates\core\home.html:67
+msgid "Protección adaptable según tamaño del proveedor para mantener disponibilidad."
+msgstr "Proteção adaptável de acordo com o tamanho do provedor para manter disponibilidade."
+
+#: .\core\templates\core\home.html:72
+msgid "Obtener un CDN"
+msgstr "Obter um CDN"
+
+#: .\core\templates\core\home.html:73
+msgid "Planificación técnica y financiera para instalar CDN propio o en alianza."
+msgstr "Planejamento técnico e financeiro para instalar CDN próprio ou em parceria."
+
+#: .\core\templates\core\home.html:79
+msgid "Estudio gratuito para definir estrategias de optimización a medida."
+msgstr "Estudo gratuito para definir estratégias de otimização personalizadas."
+
+#: .\core\templates\core\home.html:84
+msgid "Consultoría"
+msgstr "Consultoria"
+
+#: .\core\templates\core\home.html:85
+msgid "Diseño e implementación de IXP, redes neutras, peering y seguridad."
+msgstr "Design e implementação de IXP, redes neutras, peering e segurança."
+
+#: .\core\templates\core\home.html:95
+msgid "Nuestros Productos"
+msgstr "Nossos Produtos"
+
+#: .\core\templates\core\home.html:113
+msgid "Clientes que confían en nosotros"
+msgstr "Clientes que confiam em nós"
+
+#: .\core\templates\core\home.html:131
+msgid "¿Listo para optimizar tu red?"
+msgstr "Pronto para otimizar sua rede?"
+
+#: .\core\templates\core\home.html:134
+msgid "Contáctanos hoy y descubre cómo podemos ayudarte"
+msgstr "Entre em contato conosco hoje e descubra como podemos ajudá-lo"
+
+#: .\core\templates\core\home.html:137
+msgid "Agendar Consulta Gratuita"
+msgstr "Agendar Consulta Gratuita"
+
+#: .\core\templates\core\mis_simulaciones.html:5
+#: .\core\templates\core\mis_simulaciones.html:220
+#: .\core\templates\core\resultado_simulacion.html:332
+#: .\templates\base.html:124
+msgid "Mis Simulaciones"
+msgstr "Minhas Simulações"
+
+#: .\core\templates\core\mis_simulaciones.html:221
+msgid "Historial completo de tus análisis de red"
+msgstr "Histórico completo de suas análises de rede"
+
+#: .\core\templates\core\mis_simulaciones.html:247
+#: .\core\templates\core\resultado_simulacion.html:263
+msgid "Latencia"
+msgstr "Latência"
+
+#: .\core\templates\core\mis_simulaciones.html:251
+msgid "Pérdida"
+msgstr "Perda"
+
+#: .\core\templates\core\mis_simulaciones.html:255
+msgid "Mejora"
+msgstr "Melhoria"
+
+#: .\core\templates\core\mis_simulaciones.html:259
+msgid "Inversión"
+msgstr "Investimento"
+
+#: .\core\templates\core\mis_simulaciones.html:267
+msgid "Ver Resultados"
+msgstr "Ver Resultados"
+
+#: .\core\templates\core\mis_simulaciones.html:280
+#: .\core\templates\core\resultado_simulacion.html:328
+msgid "Nueva Simulación"
+msgstr "Nova Simulação"
+
+#: .\core\templates\core\mis_simulaciones.html:288
+msgid "Aún no tienes simulaciones"
+msgstr "Você ainda não tem simulações"
+
+#: .\core\templates\core\mis_simulaciones.html:289
+msgid "Comienza a analizar tu red y descubre cómo mejorarla con nuestros servicios"
+msgstr "Comece a analisar sua rede e descubra como melhorá-la com nossos serviços"
+
+#: .\core\templates\core\mis_simulaciones.html:291
+msgid "Crear Primera Simulación"
+msgstr "Criar Primeira Simulação"
+
+#: .\core\templates\core\mis_simulaciones.html:301
+msgid "¿Estás seguro de que deseas eliminar esta simulación?"
+msgstr "Você tem certeza de que deseja excluir esta simulação?"
+
+#: .\core\templates\core\mis_simulaciones.html:302
+msgid "Función de eliminación no implementada aún"
+msgstr "Função de exclusão ainda não implementada"
+
+#: .\core\templates\core\resultado_simulacion.html:5
+msgid "Resultados de Simulación"
+msgstr "Resultados da Simulação"
+
+#: .\core\templates\core\resultado_simulacion.html:247
+msgid "Resultados de tu Simulación"
+msgstr "Resultados da Sua Simulação"
+
+#: .\core\templates\core\resultado_simulacion.html:248
+msgid "Análisis completo del impacto de nuestros servicios en tu red"
+msgstr "Análise completa do impacto de nossos serviços em sua rede"
+
+#: .\core\templates\core\resultado_simulacion.html:249
+msgid "Simulación realizada el"
+msgstr "Simulação realizada em"
+
+#: .\core\templates\core\resultado_simulacion.html:254
+msgid "Servicios Seleccionados"
+msgstr "Serviços Selecionados"
+
+#: .\core\templates\core\resultado_simulacion.html:265
+#: .\core\templates\core\resultado_simulacion.html:271
+msgid "de mejora"
+msgstr "de melhoria"
+
+#: .\core\templates\core\resultado_simulacion.html:269
+msgid "Pérdida de Paquetes"
+msgstr "Perda de Pacotes"
+
+#: .\core\templates\core\resultado_simulacion.html:275
+msgid "Ancho de Banda"
+msgstr "Largura de Banda"
+
+#: .\core\templates\core\resultado_simulacion.html:277
+msgid "Optimizado para"
+msgstr "Otimizado para"
+
+#: .\core\templates\core\resultado_simulacion.html:277
+msgid "usuarios"
+msgstr "usuários"
+
+#: .\core\templates\core\resultado_simulacion.html:281
+msgid "Mejora Global"
+msgstr "Melhoria Global"
+
+#: .\core\templates\core\resultado_simulacion.html:283
+msgid "Eficiencia de la red"
+msgstr "Eficiência da rede"
+
+#: .\core\templates\core\resultado_simulacion.html:289
+msgid "Comparación Antes vs Después"
+msgstr "Comparação Antes vs Depois"
+
+#: .\core\templates\core\resultado_simulacion.html:296
+msgid "Inversión Mensual"
+msgstr "Investimento Mensal"
+
+#: .\core\templates\core\resultado_simulacion.html:300
+msgid "ROI Estimado"
+msgstr "ROI Estimado"
+
+#: .\core\templates\core\resultado_simulacion.html:301
+msgid "meses"
+msgstr "meses"
+
+#: .\core\templates\core\resultado_simulacion.html:304
+msgid "Usuarios Atendidos"
+msgstr "Usuários Atendidos"
+
+#: .\core\templates\core\resultado_simulacion.html:312
+msgid "Análisis Inteligente"
+msgstr "Análise Inteligente"
+
+#: .\core\templates\core\resultado_simulacion.html:320
+msgid "Recomendaciones Personalizadas"
+msgstr "Recomendações Personalizadas"
+
+#: .\core\templates\core\resultado_simulacion.html:336
+msgid "Contactar con Expertos"
+msgstr "Contatar Especialistas"
+
+#: .\core\templates\core\resultado_simulacion.html:357
+msgid "Antes"
+msgstr "Antes"
+
+#: .\core\templates\core\resultado_simulacion.html:364
+msgid "Después"
+msgstr "Depois"
+
+#: .\core\templates\core\simulador.html:5
+#: .\core\templates\core\simulador.html:16
+msgid "Simulador de Red Inteligente"
+msgstr "Simulador de Rede Inteligente"
+
+#: .\core\templates\core\simulador.html:19
+msgid "Descubre cómo nuestros servicios pueden transformar el rendimiento de tu red. Obtén un análisis personalizado con inteligencia artificial."
+msgstr "Descubra como nossos serviços podem transformar o desempenho da sua rede. Obtenha uma análise personalizada com inteligência artificial."
+
+#: .\core\templates\core\simulador.html:35
+msgid "Datos Actuales de Tu Red"
+msgstr "Dados Atuais da Sua Rede"
+
+#: .\core\templates\core\simulador.html:38
+msgid "Ingresa las métricas actuales de tu infraestructura de red"
+msgstr "Digite as métricas atuais da sua infraestrutura de rede"
+
+#: .\core\templates\core\simulador.html:120
+msgid "Selecciona Nuestros Servicios"
+msgstr "Selecione Nossos Serviços"
+
+#: .\core\templates\core\simulador.html:123
+msgid "Elige los servicios que deseas simular para tu red"
+msgstr "Escolha os serviços que deseja simular para sua rede"
+
+#: .\core\templates\core\simulador.html:133
+msgid "Optimiza el enrutamiento y reduce costos de tráfico"
+msgstr "Otimiza o roteamento e reduz custos de tráfego"
+
+#: .\core\templates\core\simulador.html:143
+msgid "Mejora la entrega de contenido multimedia"
+msgstr "Melhora a entrega de conteúdo multimídia"
+
+#: .\core\templates\core\simulador.html:153
+msgid "Protege tu red contra ataques DDoS"
+msgstr "Proteja sua rede contra ataques DDoS"
+
+#: .\core\templates\core\simulador.html:163
+msgid "Monitoreo y análisis detallado de tráfico"
+msgstr "Monitoramento e análise detalhada de tráfego"
+
+#: .\core\templates\core\simulador.html:178
+msgid "Generar Simulación con IA"
+msgstr "Gerar Simulação com IA"
+
+#: .\core\templates\core\simulador.html:192
+msgid "Análisis con IA"
+msgstr "Análise com IA"
+
+#: .\core\templates\core\simulador.html:193
+msgid "Resultados generados con inteligencia artificial avanzada"
+msgstr "Resultados gerados com inteligência artificial avançada"
+
+#: .\core\templates\core\simulador.html:199
+msgid "Métricas Reales"
+msgstr "Métricas Reais"
+
+#: .\core\templates\core\simulador.html:200
+msgid "Proyecciones basadas en casos de éxito reales"
+msgstr "Projeções baseadas em casos de sucesso reais"
+
+#: .\core\templates\core\simulador.html:206
+msgid "ROI Calculado"
+msgstr "ROI Calculado"
+
+#: .\core\templates\core\simulador.html:207
+msgid "Estimación de retorno de inversión personalizado"
+msgstr "Estimativa de retorno de investimento personalizado"
+
+#: .\core\templates\core\simulador.html:304
+msgid "Generando simulación..."
+msgstr "Gerando simulação..."
+
+#: .\templates\base.html:75
+msgid "Catalogo"
+msgstr "Catálogo"
+
+#: .\templates\base.html:76
+msgid "Simulador"
+msgstr "Simulador"
+
+#: .\templates\base.html:125
+msgid "Cerrar sesión"
+msgstr "Sair"
+
+#: .\templates\base.html:129
+msgid "Iniciar sesión"
+msgstr "Entrar"
+
+#: .\templates\base.html:145
+msgid "Todos los derechos reservados"
+msgstr "Todos os direitos reservados"
+
+#: .\templates\base.html:153 .\templates\base.html:166
+msgid "¿Necesitas ayuda?"
+msgstr "Precisa de ajuda?"
+
+#: .\templates\base.html:157
+msgid "Asesor Virtual"
+msgstr "Assistente Virtual"
+
+#: .\templates\base.html:161
+msgid "¡Hola! 👋 Soy tu asistente virtual de Peering Latam. ¿En qué puedo ayudarte hoy?"
+msgstr "Olá! 👋 Sou seu assistente virtual da Peering Latam. Como posso ajudá-lo hoje?"
+
+#: .\templates\base.html:163
+msgid "Escribe tu mensaje..."
+msgstr "Digite sua mensagem..."
+
+#: .\templates\base.html:172
+msgid "Agenda tu cita"
+msgstr "Agende sua consulta"
+
+#: .\templates\base.html:180
+msgid "Agendar cita"
+msgstr "Agendar consulta"
+
+#: .\templates\base.html:183
+msgid "Fecha:"
+msgstr "Data:"
+
+#: .\templates\base.html:186
+msgid "Hora:"
+msgstr "Hora:"
+
+#: .\templates\base.html:188
+msgid "Selecciona una hora"
+msgstr "Selecione um horário"
+
+#: .\templates\base.html:201
+msgid "Asunto:"
+msgstr "Assunto:"
+
+#: .\templates\base.html:202
+msgid "Describe brevemente el motivo de tu cita..."
+msgstr "Descreva brevemente o motivo da sua consulta..."
+
+#: .\templates\base.html:205
+msgid "Agendar"
+msgstr "Agendar"
+
+#: .\templates\base.html:206
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: .\templates\base.html:332
+msgid "Debes iniciar sesión para usar el chatbot."
+msgstr "Você deve fazer login para usar o chatbot."
+
+#: .\core\views.py:22
+msgid "Proveedor regional de telecomunicaciones."
+msgstr "Provedor regional de telecomunicações."
+
+#: .\core\views.py:23
+msgid "Operador mayorista de fibra óptica."
+msgstr "Operador de atacado de fibra óptica."
+
+#: .\core\views.py:24
+msgid "Proveedor de internet y TV en Chile."
+msgstr "Provedor de internet e TV no Chile."
+
+#: .\core\views.py:25
+msgid "Red nacional para servicios residenciales."
+msgstr "Rede nacional para serviços residenciais."
+
+#: .\core\views.py:30
+msgid "Visualización de tráfico con mapas de calor y flujos de red para detectar cuellos de botella."
+msgstr "Visualização de tráfego com mapas de calor e fluxos de rede para detectar gargalos."
+
+#: .\core\views.py:35
+msgid "Dashboard para monitorear servicios, tráfico, métricas y alarmas desde diversas fuentes."
+msgstr "Painel para monitorar serviços, tráfego, métricas e alarmes de diversas fontes."
+
+#: .\core\views.py:40
+msgid "Monitoreo de tráfico OTT especializado en gaming, streaming y contenido sensible."
+msgstr "Monitoramento de tráfego OTT especializado em gaming, streaming e conteúdo sensível."

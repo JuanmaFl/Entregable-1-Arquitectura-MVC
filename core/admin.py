@@ -5,7 +5,7 @@ from .models import Producto, ImagenProducto
 
 class ImagenProductoInline(admin.TabularInline):
     model = ImagenProducto
-    extra = 1  # cu·ntos campos vacÌos aparecen por defecto
+    extra = 1  # cu√°ntos campos vac√≠os aparecen por defecto
 
 class ProductoAdmin(admin.ModelAdmin):
     inlines = [ImagenProductoInline]

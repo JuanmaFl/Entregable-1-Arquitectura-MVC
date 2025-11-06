@@ -109,8 +109,15 @@ class AnalizadorIA:
     Clase para generar análisis y recomendaciones usando OpenAI
     """
     
+    # Mapeo de idiomas
+    IDIOMA_PROMPTS = {
+        'es': 'Responde en español',
+        'en': 'Respond in English',
+        'pt': 'Responda em português'
+    }
+    
     @staticmethod
-    def generar_analisis(simulacion):
+    def generar_analisis(simulacion, idioma='es'):
         """
         Genera un análisis detallado usando GPT-4
         """
@@ -132,7 +139,12 @@ class AnalizadorIA:
         if simulacion.servicio_analisis:
             servicios_seleccionados.append(servicios_nombres['analisis'])
         
+        # Instrucción de idioma
+        instruccion_idioma = AnalizadorIA.IDIOMA_PROMPTS.get(idioma, 'Responde en español')
+        
         prompt = f"""
+{instruccion_idioma}.
+
 Eres un experto en redes y telecomunicaciones de Peering Latam. 
 Analiza los siguientes datos de red de un cliente y proporciona un análisis profesional y detallado:
 
@@ -167,7 +179,7 @@ Sé específico, técnico pero comprensible, y persuasivo. Usa un tono profesion
                 messages=[
                     {
                         "role": "system", 
-                        "content": "Eres un consultor experto en redes y telecomunicaciones de Peering Latam. Proporciona análisis técnicos detallados, precisos y persuasivos."
+                        "content": f"{instruccion_idioma}. Eres un consultor experto en redes y telecomunicaciones de Peering Latam. Proporciona análisis técnicos detallados, precisos y persuasivos."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -180,14 +192,19 @@ Sé específico, técnico pero comprensible, y persuasivo. Usa un tono profesion
             
         except Exception as e:
             # Fallback si falla la IA
-            return AnalizadorIA._generar_analisis_fallback(simulacion)
+            return AnalizadorIA._generar_analisis_fallback(simulacion, idioma)
     
     @staticmethod
-    def generar_recomendaciones(simulacion):
+    def generar_recomendaciones(simulacion, idioma='es'):
         """
         Genera recomendaciones personalizadas usando GPT-4
         """
+        # Instrucción de idioma
+        instruccion_idioma = AnalizadorIA.IDIOMA_PROMPTS.get(idioma, 'Responde en español')
+        
         prompt = f"""
+{instruccion_idioma}.
+
 Basándote en estos datos de red:
 - Latencia actual: {simulacion.latencia_actual} ms
 - Pérdida de paquetes: {simulacion.perdida_paquetes_actual}%
@@ -209,7 +226,7 @@ Formato: Lista numerada.
                 messages=[
                     {
                         "role": "system", 
-                        "content": "Eres un consultor de redes especializado en dar recomendaciones prácticas y accionables."
+                        "content": f"{instruccion_idioma}. Eres un consultor de redes especializado en dar recomendaciones prácticas y accionables."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -221,12 +238,41 @@ Formato: Lista numerada.
             return recomendaciones
             
         except Exception as e:
-            return AnalizadorIA._generar_recomendaciones_fallback(simulacion)
+            return AnalizadorIA._generar_recomendaciones_fallback(simulacion, idioma)
     
     @staticmethod
-    def _generar_analisis_fallback(simulacion):
+    def _generar_analisis_fallback(simulacion, idioma='es'):
         """Análisis de respaldo si falla la IA"""
-        return f"""
+        if idioma == 'en':
+            return f"""
+**Current Network Analysis**
+
+Your network shows a latency of {simulacion.latencia_actual} ms and packet loss of {simulacion.perdida_paquetes_actual}%, with {simulacion.num_usuarios} concurrent users. These values indicate significant improvement opportunities.
+
+**Impact of Our Services**
+
+With Peering Latam's selected services, we project latency reduction to {simulacion.latencia_mejorada:.2f} ms ({simulacion.mejora_latencia_porcentaje:.1f}% improvement) and packet loss decrease to {simulacion.perdida_paquetes_mejorada:.2f}%.
+
+**Expected Benefits**
+
+Your network will experience greater stability, better user experience in real-time applications, and optimized network resource usage. The estimated investment of ${simulacion.costo_estimado_mensual} USD monthly will translate into operational savings and higher end-user satisfaction.
+"""
+        elif idioma == 'pt':
+            return f"""
+**Análise da Sua Rede Atual**
+
+Sua rede apresenta latência de {simulacion.latencia_actual} ms e perda de pacotes de {simulacion.perdida_paquetes_actual}%, com {simulacion.num_usuarios} usuários simultâneos. Estes valores indicam oportunidades significativas de melhoria.
+
+**Impacto dos Nossos Serviços**
+
+Com os serviços selecionados da Peering Latam, projetamos redução de latência até {simulacion.latencia_mejorada:.2f} ms (melhoria de {simulacion.mejora_latencia_porcentaje:.1f}%) e diminuição na perda de pacotes para {simulacion.perdida_paquetes_mejorada:.2f}%.
+
+**Benefícios Esperados**
+
+Sua rede experimentará maior estabilidade, melhor experiência do usuário em aplicações de tempo real e otimização do uso de recursos de rede. O investimento estimado de ${simulacion.costo_estimado_mensual} USD mensais se traduzirá em economias operacionais e maior satisfação do usuário final.
+"""
+        else:  # español por defecto
+            return f"""
 **Análisis de Tu Red Actual**
 
 Tu red presenta una latencia de {simulacion.latencia_actual} ms y una pérdida de paquetes del {simulacion.perdida_paquetes_actual}%, con {simulacion.num_usuarios} usuarios concurrentes. Estos valores indican oportunidades significativas de mejora.
@@ -241,9 +287,26 @@ Tu red experimentará mayor estabilidad, mejor experiencia de usuario en aplicac
 """
     
     @staticmethod
-    def _generar_recomendaciones_fallback(simulacion):
+    def _generar_recomendaciones_fallback(simulacion, idioma='es'):
         """Recomendaciones de respaldo si falla la IA"""
-        return """
+        if idioma == 'en':
+            return """
+1. Implement continuous monitoring of latency and packet loss to identify bottlenecks
+2. Optimize traffic routes through direct peering with content providers
+3. Configure load balancing to distribute traffic during peak hours
+4. Implement local cache for frequently accessed content
+5. Establish QoS policies to prioritize critical traffic
+"""
+        elif idioma == 'pt':
+            return """
+1. Implementar monitoramento contínuo de latência e perda de pacotes para identificar gargalos
+2. Otimizar rotas de tráfego através de peering direto com provedores de conteúdo
+3. Configurar balanceamento de carga para distribuir tráfego em horários de pico
+4. Implementar cache local para conteúdo acessado frequentemente
+5. Estabelecer políticas de QoS para priorizar tráfego crítico
+"""
+        else:  # español por defecto
+            return """
 1. Implementar monitoreo continuo de latencia y pérdida de paquetes para identificar cuellos de botella
 2. Optimizar rutas de tráfico mediante peering directo con proveedores de contenido
 3. Configurar balanceo de carga para distribuir tráfico en horas pico

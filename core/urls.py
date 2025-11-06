@@ -5,12 +5,12 @@ from .views import chatbot_api
 # David Hernandez & Juan Manuel Florez
 
 urlpatterns = [
-    # P·ginas principales
+    # P√°ginas principales
     path('', views.home, name='home'),
     path('chatbot/', chatbot_api, name='chatbot_api'),
     path('agendar-cita/', views.agendar_cita, name='agendar_cita'),
     
-    # Cat·logo y carrito
+    # Cat√°logo y carrito
     path('catalogo/', views.catalogo_view, name='catalogo'),
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('agregar-carrito/<int:producto_id>/', views.agregar_carrito, name='agregar_carrito'),
@@ -25,7 +25,7 @@ urlpatterns = [
     path('api/productos/', views.api_productos_json, name='api_productos_json'),
     path('api/clima/', views.obtener_clima, name='api_clima'),
     
-    # Reportes con inversiÛn de dependencias
+    # Reportes con inversi√≥n de dependencias
     path('reportes/pdf/', views.generar_reporte_pdf, name='reporte_pdf'),
     path('reportes/excel/', views.generar_reporte_excel, name='reporte_excel'),
 ]
