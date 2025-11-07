@@ -968,25 +968,40 @@ form textarea {
 .sidebar {
     background: var(--gradient-main);
     color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 0.55rem;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     box-shadow: var(--shadow-md);
-    transform: translateX(-85%);
-    transition: transform 0.3s ease;
+    transform: translateX(-20%);
+    transition: all 0.3s ease;
     cursor: pointer;
     font-weight: 600;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    min-width: 80px;
 }
 
     .sidebar::before {
         content: '📅';
-        font-size: 1.5rem;
+        font-size: 2rem;
+        transition: all 0.3s ease;
     }
 
     .sidebar:hover {
         transform: translateX(0);
+        padding: 1rem 1.5rem;
+        justify-content: flex-start;
+    }
+
+    /* Ocultar emoji cuando está extendido */
+    .sidebar:hover::before {
+        display: none;
+    }
+
+    /* Ocultar texto cuando está retraído */
+    .sidebar:not(:hover) a {
+        display: none;
     }
 
     .sidebar a {

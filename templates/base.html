@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 {% load i18n %}
 <html lang="{{ LANGUAGE_CODE|default:'es' }}">
@@ -6,6 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Peering Latam - Conectividad Inteligente{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'core/img/logo.avif' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'core/img/logo.avif' %}">
+    <link rel="apple-touch-icon" href="{% static 'core/img/logo.avif' %}">
 
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -309,7 +314,7 @@
                 input.value = '';
 
                 try {
-                    const response = await fetch("{% url 'chatbot_api' %}", {
+                    const response = await fetch('/chatbot/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
