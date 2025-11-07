@@ -309,7 +309,7 @@
                 input.value = '';
 
                 try {
-                    const response = await fetch('/chatbot/', {
+                    const response = await fetch("{% url 'chatbot_api' %}", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

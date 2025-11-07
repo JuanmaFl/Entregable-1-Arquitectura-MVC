@@ -1,10 +1,13 @@
 import openai
 from django.conf import settings
 import json
+from openai import OpenAI # Importamos el cliente
+from openai import AuthenticationError, APIError, RateLimitError # Importamos las excepciones (aunque se manejan con un fallback)
 
-# Juan Manuel Florez
-
-openai.api_key = settings.OPENAI_API_KEY
+# 🚨 Inicialización del CLIENTE para OpenAI v2.7.1
+# Se usa el mismo cliente que inicializamos en views.py, pero lo re-inicializamos aquí por seguridad
+# en caso de que este módulo se ejecute de forma independiente o antes.
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 class SimuladorCalculator:
@@ -14,10 +17,10 @@ class SimuladorCalculator:
     
     # Factores de mejora por servicio
     MEJORAS_LATENCIA = {
-        'pmaas': 0.25,      # 25% de mejora
-        'cdn': 0.40,        # 40% de mejora
-        'ddos': 0.10,       # 10% de mejora
-        'analisis': 0.15,   # 15% de mejora
+        'pmaas': 0.25,       # 25% de mejora
+        'cdn': 0.40,         # 40% de mejora
+        'ddos': 0.10,        # 10% de mejora
+        'analisis': 0.15,    # 15% de mejora
     }
     
     MEJORAS_PERDIDA_PAQUETES = {
@@ -174,7 +177,8 @@ Sé específico, técnico pero comprensible, y persuasivo. Usa un tono profesion
 """
         
         try:
-            response = openai.ChatCompletion.create(
+            # 🚨 CAMBIO DE SINTAXIS: Usamos client.chat.completions.create
+            response = client.chat.completions.create(
                 model="gpt-4",
                 messages=[
                     {
@@ -191,7 +195,8 @@ Sé específico, técnico pero comprensible, y persuasivo. Usa un tono profesion
             return analisis
             
         except Exception as e:
-            # Fallback si falla la IA
+            # Puedes usar las excepciones específicas aquí si lo deseas, pero el fallback ya es robusto
+            print(f"Error en AnalizadorIA.generar_analisis: {e}")
             return AnalizadorIA._generar_analisis_fallback(simulacion, idioma)
     
     @staticmethod
@@ -221,7 +226,8 @@ Formato: Lista numerada.
 """
         
         try:
-            response = openai.ChatCompletion.create(
+            # 🚨 CAMBIO DE SINTAXIS: Usamos client.chat.completions.create
+            response = client.chat.completions.create(
                 model="gpt-4",
                 messages=[
                     {
@@ -238,6 +244,7 @@ Formato: Lista numerada.
             return recomendaciones
             
         except Exception as e:
+            print(f"Error en AnalizadorIA.generar_recomendaciones: {e}")
             return AnalizadorIA._generar_recomendaciones_fallback(simulacion, idioma)
     
     @staticmethod

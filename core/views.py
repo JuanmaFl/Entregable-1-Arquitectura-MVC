@@ -7,18 +7,23 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 from django.contrib import messages
-import openai, dateparser
+import dateparser
 import json
 import requests
 from datetime import datetime, date
+
+# 🚨 CAMBIOS CRÍTICOS PARA OPENAI V2.7.1
+# Importamos el nuevo cliente y las excepciones desde la raíz del paquete
+from openai import OpenAI, AuthenticationError, APIError, RateLimitError 
 
 from .models import Producto, SimulacionRed
 from .forms import SimuladorRedForm
 from .simulador_utils import SimuladorCalculator, AnalizadorIA
 from .services.report_generator import PDFReportGenerator, ExcelReportGenerator, ReportService
 
-# Asigna la API key desde settings
-openai.api_key = settings.OPENAI_API_KEY
+# 🚨 Inicialización del CLIENTE para OpenAI v2.7.1
+# Esto reemplaza openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 # Juan Manuel Florez
@@ -61,31 +66,60 @@ def home(request):
 @csrf_exempt
 @login_required
 def chatbot_api(request):
+    # 1. Validación del Método 
     if request.method != 'POST':
         return JsonResponse({'reply': 'Método no permitido'}, status=405)
 
-    data = json.loads(request.body)
-    user_message = data.get('message', '').strip()
+    try:
+        data = json.loads(request.body)
+        user_message = data.get('message', '').strip()
 
-    # Conversación únicamente para asistencia técnica o preguntas frecuentes
-    gpt_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": (
-                "Eres un asistente virtual en el sitio web de Peering Latam. "
-                "Respondes preguntas técnicas, dudas frecuentes sobre servicios, productos, procesos, "
-                "información institucional, y soporte general. "
-                "Evita agendar citas o recoger datos personales. "
-                "Habla con un tono profesional, claro y cercano. "
-                "Carlos Florez es el fundador de la empresa, menciónalo si preguntan por el fundador. "
-                "Intenta motivar a las personas de forma persuasiva a comprar nuestros servicios."
-            )},
-            {"role": "user", "content": user_message}
-        ]
-    )
-    reply = gpt_response.choices[0].message.content
+        if not user_message:
+            return JsonResponse({'reply': 'Por favor, escribe un mensaje.'}, status=400)
+        
+        # 🚨 2. Llamada a la API de OpenAI (USANDO EL NUEVO CLIENTE)
+        gpt_response = client.chat.completions.create( # <--- Cambio aquí: client.chat.completions.create
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": (
+                    "Eres un asistente virtual en el sitio web de Peering Latam. "
+                    "Respondes preguntas técnicas, dudas frecuentes sobre servicios, productos, procesos, "
+                    "información institucional, y soporte general. "
+                    "Evita agendar citas o recoger datos personales. "
+                    "Habla con un tono profesional, claro y cercano. "
+                    "Carlos Florez es el fundador de la empresa, menciónalo si preguntan por el fundador. "
+                    "Intenta motivar a las personas de forma persuasiva a comprar nuestros servicios."
+                )},
+                {"role": "user", "content": user_message}
+            ]
+        )
+        # La forma de acceder al contenido es ligeramente diferente en v1.x/v2.x
+        reply = gpt_response.choices[0].message.content
 
-    return JsonResponse({'reply': reply})
+        # 3. Respuesta JSON Exitosa
+        return JsonResponse({'reply': reply})
+
+    # 🚨 4. Manejo de Errores Específicos de OpenAI (Versión 2.7.1)
+    except AuthenticationError:
+        # Error 401: Clave API incorrecta, inválida o expirada.
+        return JsonResponse({'reply': 'Error: La clave de OpenAI no es válida o expiró.'}, status=401)
+    except RateLimitError:
+        # Error 429: Límite de uso excedido.
+        return JsonResponse({'reply': 'Estamos recibiendo muchas peticiones. Por favor, intenta en un minuto.'}, status=429)
+    except APIError:
+        # Otros errores de la API (problemas de servidor, modelo, etc.)
+        return JsonResponse({'reply': 'Hubo un error en el servicio de IA. Inténtalo de nuevo.'}, status=503)
+        
+    # 5. Manejo de Errores de Petición
+    except json.JSONDecodeError:
+        # Error si el cuerpo de la petición (request.body) no es JSON
+        return JsonResponse({'reply': 'Error: Formato de mensaje inválido.'}, status=400)
+    
+    # 6. Manejo de Otros Errores de Python
+    except Exception as e:
+        print(f"Error grave no capturado en chatbot_api: {e}")
+        # Devuelve 500 con JSON para no romper el frontend
+        return JsonResponse({'reply': 'Ocurrió un error inesperado en el servidor. Consulta los logs.'}, status=500)
 
 
 @login_required
@@ -194,10 +228,14 @@ def simulador_red(request):
             simulacion = SimuladorCalculator.calcular_mejoras(simulacion)
             
             # Generar análisis con IA
+            # NOTA: Asumimos que la clase AnalizadorIA fue actualizada o está en un archivo
+            # que importa el cliente de OpenAI de forma correcta. Si no, esta sección podría fallar.
             try:
                 simulacion.analisis_ia = AnalizadorIA.generar_analisis(simulacion)
                 simulacion.recomendaciones_ia = AnalizadorIA.generar_recomendaciones(simulacion)
             except Exception as e:
+                # El error 500 original se debió a un error de importación. Con las correcciones
+                # de arriba, si esto falla, es un problema en AnalizadorIA o con la clave API.
                 print(f"Error al generar análisis IA: {e}")
                 # Los fallbacks se aplicarán automáticamente
             
@@ -219,8 +257,6 @@ def simulador_red(request):
 from django.utils.translation import get_language
 
 @login_required
-
-
 def resultado_simulacion(request, simulacion_id):
     """
     Muestra los resultados de una simulación
@@ -233,6 +269,8 @@ def resultado_simulacion(request, simulacion_id):
     # Regenerar análisis si no existe o si cambió el idioma
     if not simulacion.analisis_ia or request.GET.get('regenerar'):
         try:
+            # NOTA: Asumimos que la clase AnalizadorIA fue actualizada o está en un archivo
+            # que importa el cliente de OpenAI de forma correcta. Si no, esta sección podría fallar.
             simulacion.analisis_ia = AnalizadorIA.generar_analisis(simulacion, idioma)
             simulacion.recomendaciones_ia = AnalizadorIA.generar_recomendaciones(simulacion, idioma)
             simulacion.save()
